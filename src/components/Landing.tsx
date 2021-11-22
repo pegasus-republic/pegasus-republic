@@ -145,16 +145,16 @@ export default function Example() {
                       className="inline-flex items-center text-white bg-black rounded-full p-1 pr-2 sm:text-base lg:text-sm xl:text-base hover:text-gray-200"
                     >
                       <span className="px-3 py-0.5 text-white text-xs font-semibold leading-5 uppercase tracking-wide bg-gradient-to-r from-teal-500 to-cyan-600 rounded-full">
-                        Now on Pancake Swap
+                        Pancake Swap
                       </span>
-                      <span className="ml-4 text-sm">Buy Now</span>
+                      <span className="ml-4 text-sm">Coming soon...</span>
                       <ChevronRightIcon
                         className="ml-2 w-5 h-5 text-gray-500"
                         aria-hidden="true"
                       />
                     </a>
                     <h1 className="mt-4 text-4xl tracking-tight font-extrabold text-white sm:mt-5 sm:text-6xl lg:mt-6 xl:text-6xl">
-                      <span className="block">American Pegasus</span>
+                      <span className="block">Pegasus Republic</span>
                       <span className="pb-3 block bg-clip-text text-transparent bg-gradient-to-r from-teal-200 to-cyan-400 sm:pb-5">
                         A better SafeMoon
                       </span>
@@ -215,7 +215,7 @@ export default function Example() {
                 </p>
 
                 <p className="mt-5 max-w-prose mx-auto text-xl text-gray-500">
-                  American Pegasus is a fork of the SafeMoon contract that
+                  Pegasus Republic is a fork of the SafeMoon contract that
                   replaces developer manipulation with community voting. Now you
                   can decide the burn, tax, interest and inflation rates.
                 </p>

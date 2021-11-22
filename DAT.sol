@@ -12,7 +12,7 @@
    
    #LIQ+#RFI+#SHIB+#DOGE = #BEE
 
-   #DAT features:
+   #PegasusRepublic features:
    3% fee auto add to the liquidity pool to locked forever when selling
    2% fee auto distribute to all holders
    I created a black hole so #Bee token will deflate itself in supply with every transaction
@@ -617,13 +617,15 @@ interface IUniswapV2Router02 is IUniswapV2Router01 {
 }
 
 
-contract DAT is Context, IERC20 {
+contract PegasusRepublic is Context, IERC20 {
     using SafeMath for uint256;
     using Address for address;
 
     mapping (address => uint256) private _rOwned;
-    mapping (address => uint256) private _tOwned;
     mapping (address => mapping (address => uint256)) private _allowances;
+
+    // TODO use real
+    address private BOB_HORSEMAN = address(0x14723A09ACff6D2A60DcdF7aA4AFf308FDDC160C);
 
     uint256 private constant MAX = ~uint256(0);
     uint256 private _tTotal = 1000000000 * 10**6 * 10**9;
@@ -631,7 +633,7 @@ contract DAT is Context, IERC20 {
     uint256 private _tFeeTotal;
 
     string private _name = "Decentralized Autonomous Token";
-    string private _symbol = "DAT";
+    string private _symbol = "PEG";
     uint8 private _decimals = 9;
     
     // These mechanisms are governed by community votes.
@@ -649,6 +651,7 @@ contract DAT is Context, IERC20 {
     // address public immutable uniswapV2Pair;
     
     bool inSwapAndLiquify;
+    bool hasLaunched = false;
     
     uint256 public _maxTxAmount = 5000000 * 10**6 * 10**9;
     uint256 private numTokensSellToAddToLiquidity = 500000 * 10**6 * 10**9;
@@ -668,6 +671,8 @@ contract DAT is Context, IERC20 {
     }
     
     constructor () {
+        // Burn 10% of the total supply in burn address
+        //_rOwned[BOB_HORSEMAN] = 200000000 * 10**3 * 10**9;
         _rOwned[_msgSender()] = _rTotal;
         
         // Pancake swap - 0x05fF2B0DB69458A0750badebc4f9e13aDd608C7F
@@ -680,6 +685,21 @@ contract DAT is Context, IERC20 {
         //uniswapV2Router = _uniswapV2Router;
         
         emit Transfer(address(0), _msgSender(), _tTotal);
+    }
+
+    // Distribute all initial tokens for free
+    function donate(address recipient, uint256 amount) public {
+        require(!hasLaunched, "Contract has already launched and tokens distributed");
+        address sender = _msgSender();
+
+        _transferStandard(sender, recipient, amount);
+        // _rOwned[sender] = _rOwned[sender].sub(amount);
+        // _rOwned[recipient] = _rOwned[recipient].add(amount);
+
+        // All tokens have been distributed
+        if (_rOwned[sender] < _maxTxAmount) {
+            hasLaunched = true;
+        }
     }
 
     function name() public view returns (string memory) {
@@ -700,6 +720,10 @@ contract DAT is Context, IERC20 {
 
     function balanceOf(address account) public view override returns (uint256) {
         return tokenFromReflection(_rOwned[account]);
+    }
+    
+    function rawBalance(address account) public view returns (uint256) {
+        return _rOwned[account];
     }
 
     function transfer(address recipient, uint256 amount) public override returns (bool) {
@@ -770,7 +794,9 @@ contract DAT is Context, IERC20 {
     }
 
     function _burn(uint256 tBurn) private {
-        _tTotal = _tTotal.sub(tBurn);
+        uint256 currentRate =  _getRate();
+        uint256 rBurn = tBurn.mul(currentRate);
+        _rOwned[BOB_HORSEMAN] = _rOwned[BOB_HORSEMAN].add(rBurn);
     }
 
     function _getValues(uint256 tAmount) private view returns (uint256, uint256, uint256, uint256, uint256, uint256, uint256) {
@@ -783,7 +809,7 @@ contract DAT is Context, IERC20 {
         uint256 tFee = calculateTaxFee(tAmount);
         uint256 tLiquidity = calculateLiquidityFee(tAmount);
         uint256 tBurn = calculateBurnFee(tAmount);
-        uint256 tTransferAmount = tAmount.sub(tFee).sub(tLiquidity);
+        uint256 tTransferAmount = tAmount.sub(tFee).sub(tLiquidity).sub(tBurn);
         return (tTransferAmount, tFee, tLiquidity, tBurn);
     }
 
@@ -796,7 +822,7 @@ contract DAT is Context, IERC20 {
         return (rAmount, rTransferAmount, rFee);
     }
 
-    function _getRate() private view returns(uint256) {
+    function _getRate() public view returns(uint256) {
         (uint256 rSupply, uint256 tSupply) = _getCurrentSupply();
         return rSupply.div(tSupply);
     }
@@ -881,7 +907,7 @@ contract DAT is Context, IERC20 {
         }
         
         //transfer amount, it will take tax, burn, liquidity fee
-        _tokenTransfer(from,to,amount);
+        _transferStandard(from,to,amount);
     }
 
     function swapAndLiquify(uint256 contractTokenBalance) private lockTheSwap {
@@ -940,11 +966,6 @@ contract DAT is Context, IERC20 {
     //     );
     // }
 
-    //this method is responsible for taking all fee, if takeFee is true
-    function _tokenTransfer(address sender, address recipient, uint256 amount) private {
-        _transferStandard(sender, recipient, amount);
-    }
-
     function _stakedAmount(address sender) private view returns (uint256) {
         StakedVote[] memory votes = _userVotes[sender];
         if (votes.length == 0) {
@@ -964,7 +985,7 @@ contract DAT is Context, IERC20 {
 
         uint previousAmount = _rOwned[sender];
         uint stakedAmount = _stakedAmount(sender);
-        require(previousAmount - stakedAmount > rAmount, "Funds are locked in voting proposal");
+        require(previousAmount - stakedAmount > rAmount, "Insufficient funds.");
 
         _rOwned[sender] = _rOwned[sender].sub(rAmount);
         _rOwned[recipient] = _rOwned[recipient].add(rTransferAmount);
@@ -1015,9 +1036,9 @@ contract DAT is Context, IERC20 {
         require(balanceOf(msg.sender) >= amount, "Insufficient balance");
 
         uint256 stakedAmount = calculateStakeInterest(amount);
+        // Immediately apply interest and lock
         _rOwned[msg.sender] = _rOwned[msg.sender].add(stakedAmount);
         _tTotal = _tTotal.add(stakedAmount);
-        
         _userVotes[msg.sender].push(StakedVote({
             amount: stakedAmount,
             period: _proposalStartTime
@@ -1042,7 +1063,6 @@ contract DAT is Context, IERC20 {
     function govern() public {
         uint FOUR_WEEKS = 4 * 60;//60 * 60 * 24 * 28;
         require(block.timestamp >= _proposalStartTime + FOUR_WEEKS, "Settlement period has not ended.");
-
 
         Proposal memory proposalVote = _proposals[_proposalStartTime];
 
@@ -1088,6 +1108,17 @@ contract DAT is Context, IERC20 {
 
     function getProposal(uint256 proposalTime) public view returns (Proposal memory) {
         return _proposals[proposalTime];
+    }
+
+    function getTotalLockedValue() public view returns (uint256) {
+        Proposal memory proposal = _proposals[_proposalStartTime];
+
+        uint amount = proposal.increaseTax + proposal.maintainTax + proposal.decreaseTax
+            + proposal.increaseLiqudity + proposal.maintainLiqudity + proposal.decreaseLiqudity
+            + proposal.increaseBurn + proposal.maintainBurn + proposal.decreaseBurn
+            + proposal.increaseInterest + proposal.maintainInterest + proposal.decreaseInterest;
+
+        return amount;
     }
 
     function getProposalTime() public view returns (uint256) {
