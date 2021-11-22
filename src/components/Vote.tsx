@@ -52,15 +52,15 @@ const burnOptions: Option[] = [
 const interestOptions: Option[] = [
   {
     title: "Decrease Interest",
-    percent: "5%",
+    percent: "0.4%",
   },
   {
     title: "Maintain Interest",
-    percent: "6%",
+    percent: "0.5%",
   },
   {
     title: "Increase Interest",
-    percent: "7%",
+    percent: "0.6%",
   },
 ];
 
@@ -82,7 +82,7 @@ export const Vote: React.FC<VoteProps> = ({ options, selected, select }) => {
   return (
     <>
       <RadioGroup value={selected} onChange={select}>
-        <div className="mt-4 grid grid-cols-1 gap-y-6 sm:grid-cols-3 sm:gap-x-4">
+        <div className="mt-4 grid grid-cols-3 gap-y-6 sm:grid-cols-3 gap-x-4">
           {options.map((option) => (
             <RadioGroup.Option
               key={option.title}
@@ -97,7 +97,7 @@ export const Vote: React.FC<VoteProps> = ({ options, selected, select }) => {
             >
               {({ checked, active }) => (
                 <>
-                  <div className="flex-1 flex items-center">
+                  <div className="flex-1 flex items-center flex-col sm:flex-row">
                     <RadioGroup.Label
                       as="span"
                       className="block text-sm font-medium text-gray-900 text-left"
