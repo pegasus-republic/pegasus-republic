@@ -18,7 +18,7 @@ const reflectionOptions: Option[] = [
   {
     title: "Decrease reflection",
     percent: "2%",
-    voteIndex: 0,
+    voteIndex: 2,
   },
   {
     title: "Maintain reflection",
@@ -28,7 +28,7 @@ const reflectionOptions: Option[] = [
   {
     title: "Increase reflection",
     percent: "4%",
-    voteIndex: 2,
+    voteIndex: 0,
   },
 ];
 
@@ -36,7 +36,7 @@ const liqudityOptions: Option[] = [
   {
     title: "Decrease LP",
     percent: "4%",
-    voteIndex: 3,
+    voteIndex: 5,
   },
   {
     title: "Maintain LP",
@@ -46,7 +46,7 @@ const liqudityOptions: Option[] = [
   {
     title: "Increase LP",
     percent: "6%",
-    voteIndex: 5,
+    voteIndex: 3,
   },
 ];
 
@@ -54,7 +54,7 @@ const burnOptions: Option[] = [
   {
     title: "Decrease Burn",
     percent: "1%",
-    voteIndex: 6,
+    voteIndex: 8,
   },
   {
     title: "Maintain Burn",
@@ -64,7 +64,7 @@ const burnOptions: Option[] = [
   {
     title: "Increase Burn",
     percent: "4%",
-    voteIndex: 8,
+    voteIndex: 6,
   },
 ];
 
@@ -72,7 +72,7 @@ const interestOptions: Option[] = [
   {
     title: "Decrease Interest",
     percent: "0.4%",
-    voteIndex: 9,
+    voteIndex: 11,
   },
   {
     title: "Maintain Interest",
@@ -82,7 +82,7 @@ const interestOptions: Option[] = [
   {
     title: "Increase Interest",
     percent: "0.6%",
-    voteIndex: 11,
+    voteIndex: 9,
   },
 ];
 
@@ -122,7 +122,7 @@ export const Vote: React.FC<VoteProps> = ({
               className={({ checked, active }) =>
                 classNames(
                   checked ? "border-transparent" : "border-gray-300",
-                  active ? "ring-2 ring-indigo-500" : "",
+                  active ? "ring-2 ring-cyan-500" : "",
                   "relative bg-white border rounded-lg shadow-sm p-4 flex  focus:outline-none"
                 )
               }
@@ -149,19 +149,19 @@ export const Vote: React.FC<VoteProps> = ({
                   <CheckCircleIcon
                     className={classNames(
                       !checked ? "invisible" : "",
-                      "h-5 w-5 text-indigo-600"
+                      "h-5 w-5 text-cyan-600"
                     )}
                     aria-hidden="true"
                   />
                   <div
                     className={classNames(
                       active ? "border" : "border-2",
-                      checked ? "border-indigo-500" : "border-transparent",
+                      checked ? "border-cyan-500" : "border-transparent",
                       "absolute -inset-px rounded-lg pointer-events-none"
                     )}
                     aria-hidden="true"
                   />
-                  <span className="text-indigo-700 text-xs font-bold overflow-visible absolute bottom-0">
+                  <span className="text-cyan-700 text-xs font-bold overflow-visible absolute bottom-0">
                     {currentProposal.length === 0 && "33%"}
                     {currentProposal.length > 0 &&
                       `${(
@@ -250,7 +250,7 @@ export default function Proposal() {
           )}
           {hasWeb3 && (
             <h1 className="mt-4 text-2xl tracking-tight font-extrabold text-white sm:mt-2 sm:text-2xl lg:mt-3 xl:text-2xl">
-              <span className="block bg-clip-text text-transparent bg-gradient-to-r text-indigo-600">
+              <span className="block bg-clip-text text-transparent bg-gradient-to-r text-cyan-600">
                 TLV: {totalValueLocked || "-"}
               </span>
             </h1>
@@ -297,7 +297,7 @@ export default function Proposal() {
                 type="number"
                 name="price"
                 id="price"
-                className="focus:ring-indigo-500 focus:border-indigo-500 block w-full pl-7 pr-12 sm:text-2xl border-gray-300 rounded-md"
+                className="focus:ring-cyan-500 focus:border-cyan-500 block w-full pl-7 pr-12 sm:text-2xl border-gray-300 rounded-md"
                 placeholder="0.00"
                 aria-describedby="price-currency"
                 value={amount}

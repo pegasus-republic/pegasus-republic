@@ -155,8 +155,9 @@ export default function Features() {
                   </svg>
                   <p className="mt-6 text-2xl font-medium text-white">
                     I used to store my money in a bank and allow politicans to
-                    decide the fate of my financial success. Now I get a say in
-                    my funds, community and future of the economy. Neeeeigh!
+                    decide the fate of my financial success. Now I have a say in
+                    my money, my community and the future of the economy.
+                    Neeeeigh!
                   </p>
                 </div>
                 <footer className="mt-6">
