@@ -2,7 +2,6 @@ import Web3 from "web3/dist/web3.min.js";
 import abi from "./ABI.json";
 
 const initialiseWeb3 = async () => {
-  console.log({ eth: window.ethereum });
   if ((window as any).ethereum) {
     try {
       // Request account access if needed
@@ -19,7 +18,7 @@ const initialiseWeb3 = async () => {
   return null;
 };
 
-let web3: Web3;
+let web3: Web3 | null;
 async function getWeb3() {
   if (!web3) {
     web3 = await initialiseWeb3();
@@ -49,6 +48,11 @@ export async function connectWeb3() {
 
 export async function getTLV() {
   const web3 = await getWeb3();
+
+  if (!web3) {
+    return 0;
+  }
+
   const accounts = await web3.eth.getAccounts();
   const account = accounts[0];
   const contract = new web3.eth.Contract(
@@ -61,6 +65,10 @@ export async function getTLV() {
 
 export async function getCurrentProposal() {
   const web3 = await getWeb3();
+  if (!web3) {
+    return null;
+  }
+
   const accounts = await web3.eth.getAccounts();
   const account = accounts[0];
   const contract = new web3.eth.Contract(
@@ -73,6 +81,9 @@ export async function getCurrentProposal() {
 
 export async function getProposalTime() {
   const web3 = await getWeb3();
+  if (!web3) {
+    return 0;
+  }
   const accounts = await web3.eth.getAccounts();
   const account = accounts[0];
   const contract = new web3.eth.Contract(
@@ -95,6 +106,10 @@ interface VoteOptions {
 }
 export async function vote({ amount, options }: VoteOptions) {
   const web3 = await getWeb3();
+  if (!web3) {
+    return false;
+  }
+
   const accounts = await web3.eth.getAccounts();
   const account = accounts[0];
   const contract = new web3.eth.Contract(
