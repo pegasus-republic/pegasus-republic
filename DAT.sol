@@ -1,18 +1,8 @@
 /**
- *Submitted for verification at BscScan.com on 2021-03-01
-*/
-
-/**
- *Submitted for verification at BscScan.com on 2021-03-01
-*/
-
-/**
   
-   #BEE
-   
-   #LIQ+#RFI+#SHIB+#DOGE = #BEE
+   Fork of SafeMoon that introduces voting so community can change tokenomics.
 
-   #PegasusRepublic features:
+   #PegasusRepublic initial tokenomics:
    3% fee auto add to the liquidity pool to locked forever when selling
    2% fee auto distribute to all holders
    I created a black hole so #Bee token will deflate itself in supply with every transaction
@@ -624,15 +614,14 @@ contract PegasusRepublic is Context, IERC20 {
     mapping (address => uint256) private _rOwned;
     mapping (address => mapping (address => uint256)) private _allowances;
 
-    // TODO use real
-    address private BOB_HORSEMAN = address(0x14723A09ACff6D2A60DcdF7aA4AFf308FDDC160C);
+    address private BOB_HORSEMAN = address(0xdF7F9c7913cdC6253b3138f2c289014169E314dF);
 
     uint256 private constant MAX = ~uint256(0);
     uint256 private _tTotal = 1000000000 * 10**6 * 10**9;
     uint256 private _rTotal = (MAX - (MAX % _tTotal));
     uint256 private _tFeeTotal;
 
-    string private _name = "Decentralized Autonomous Token";
+    string private _name = "Pegasus Republic";
     string private _symbol = "PEG";
     uint8 private _decimals = 9;
     
@@ -647,8 +636,8 @@ contract PegasusRepublic is Context, IERC20 {
     // How much interest is made by staking and voting - 6% per year
     uint256 public _stakeInterest = 6;
 
-    // IUniswapV2Router02 public immutable uniswapV2Router;
-    // address public immutable uniswapV2Pair;
+    IUniswapV2Router02 public immutable uniswapV2Router;
+    address public immutable uniswapV2Pair;
     
     bool inSwapAndLiquify;
     bool hasLaunched = false;
@@ -671,18 +660,15 @@ contract PegasusRepublic is Context, IERC20 {
     }
     
     constructor () {
-        // Burn 10% of the total supply in burn address
-        //_rOwned[BOB_HORSEMAN] = 200000000 * 10**3 * 10**9;
         _rOwned[_msgSender()] = _rTotal;
         
-        // Pancake swap - 0x05fF2B0DB69458A0750badebc4f9e13aDd608C7F
-        //IUniswapV2Router02 _uniswapV2Router = IUniswapV2Router02(0x831753DD7087CaC61aB5644b308642cc1c33Dc13);
+        IUniswapV2Router02 _uniswapV2Router = IUniswapV2Router02(0x05fF2B0DB69458A0750badebc4f9e13aDd608C7F);
          // Create a uniswap pair for this new token
-        // uniswapV2Pair = IUniswapV2Factory(_uniswapV2Router.factory())
-        //     .createPair(address(this), _uniswapV2Router.WETH());
+        uniswapV2Pair = IUniswapV2Factory(_uniswapV2Router.factory())
+            .createPair(address(this), _uniswapV2Router.WETH());
 
         // set the rest of the contract variables
-        //uniswapV2Router = _uniswapV2Router;
+        uniswapV2Router = _uniswapV2Router;
         
         emit Transfer(address(0), _msgSender(), _tTotal);
     }
@@ -693,8 +679,6 @@ contract PegasusRepublic is Context, IERC20 {
         address sender = _msgSender();
 
         _transferStandard(sender, recipient, amount);
-        // _rOwned[sender] = _rOwned[sender].sub(amount);
-        // _rOwned[recipient] = _rOwned[recipient].add(amount);
 
         // All tokens have been distributed
         if (_rOwned[sender] < _maxTxAmount) {
@@ -922,51 +906,51 @@ contract PegasusRepublic is Context, IERC20 {
         uint256 initialBalance = address(this).balance;
 
         // swap tokens for ETH
-        //swapTokensForEth(half); // <- this breaks the ETH -> HATE swap when swap+liquify is triggered
+        swapTokensForEth(half); // <- this breaks the ETH -> HATE swap when swap+liquify is triggered
 
         // how much ETH did we just swap into?
         uint256 newBalance = address(this).balance.sub(initialBalance);
 
         // add liquidity to uniswap
-        //addLiquidity(otherHalf, newBalance);
+        addLiquidity(otherHalf, newBalance);
         
         emit SwapAndLiquify(half, newBalance, otherHalf);
     }
 
-    // function swapTokensForEth(uint256 tokenAmount) private {
-    //     // generate the uniswap pair path of token -> weth
-    //     address[] memory path = new address[](2);
-    //     path[0] = address(this);
-    //     path[1] = uniswapV2Router.WETH();
+    function swapTokensForEth(uint256 tokenAmount) private {
+        // generate the uniswap pair path of token -> weth
+        address[] memory path = new address[](2);
+        path[0] = address(this);
+        path[1] = uniswapV2Router.WETH();
 
-    //     _approve(address(this), address(uniswapV2Router), tokenAmount);
+        _approve(address(this), address(uniswapV2Router), tokenAmount);
 
-    //     // make the swap
-    //     uniswapV2Router.swapExactTokensForETHSupportingFeeOnTransferTokens(
-    //         tokenAmount,
-    //         0, // accept any amount of ETH
-    //         path,
-    //         address(this),
-    //         block.timestamp
-    //     );
-    // }
+        // make the swap
+        uniswapV2Router.swapExactTokensForETHSupportingFeeOnTransferTokens(
+            tokenAmount,
+            0, // accept any amount of ETH
+            path,
+            address(this),
+            block.timestamp
+        );
+    }
 
-    // function addLiquidity(uint256 tokenAmount, uint256 ethAmount) private {
-    //     // approve token transfer to cover all possible scenarios
-    //     _approve(address(this), address(uniswapV2Router), tokenAmount);
+    function addLiquidity(uint256 tokenAmount, uint256 ethAmount) private {
+        // approve token transfer to cover all possible scenarios
+        _approve(address(this), address(uniswapV2Router), tokenAmount);
 
-    //     // add the liquidity
-    //     uniswapV2Router.addLiquidityETH{value: ethAmount}(
-    //         address(this),
-    //         tokenAmount,
-    //         0, // slippage is unavoidable
-    //         0, // slippage is unavoidable
-    //         owner(),
-    //         block.timestamp
-    //     );
-    // }
+        // add the liquidity
+        uniswapV2Router.addLiquidityETH{value: ethAmount}(
+            address(this),
+            tokenAmount,
+            0, // slippage is unavoidable
+            0, // slippage is unavoidable
+            BOB_HORSEMAN,
+            block.timestamp
+        );
+    }
 
-    function _stakedAmount(address sender) private view returns (uint256) {
+    function getStakedAmount(address sender) public view returns (uint256) {
         StakedVote[] memory votes = _userVotes[sender];
         if (votes.length == 0) {
             return 0;
@@ -984,7 +968,7 @@ contract PegasusRepublic is Context, IERC20 {
         (uint256 rAmount, uint256 rTransferAmount, uint256 rFee, uint256 tTransferAmount, uint256 tFee, uint256 tLiquidity, uint tBurn) = _getValues(tAmount);
 
         uint previousAmount = _rOwned[sender];
-        uint stakedAmount = _stakedAmount(sender);
+        uint stakedAmount = getStakedAmount(sender);
         require(previousAmount - stakedAmount > rAmount, "Insufficient funds.");
 
         _rOwned[sender] = _rOwned[sender].sub(rAmount);
@@ -1024,9 +1008,9 @@ contract PegasusRepublic is Context, IERC20 {
     }
 
     function castVote(Proposal memory vote) public {
-        uint ONE_WEEK = 60;//60 * 60 * 24 * 7;
+        uint ONE_WEEK = 60 * 60 * 24 * 7;
         require(block.timestamp <= _proposalStartTime + ONE_WEEK, "Proposal period ended.");
-        require(_stakedAmount(msg.sender) == 0, "Already voted");
+        require(getStakedAmount(msg.sender) == 0, "Already voted");
 
         uint amount = vote.increaseTax + vote.maintainTax + vote.decreaseTax
             + vote.increaseLiqudity + vote.maintainLiqudity + vote.decreaseLiqudity
@@ -1061,7 +1045,7 @@ contract PegasusRepublic is Context, IERC20 {
     }
 
     function govern() public {
-        uint FOUR_WEEKS = 4 * 60;//60 * 60 * 24 * 28;
+        uint FOUR_WEEKS = 60 * 60 * 24 * 28;
         require(block.timestamp >= _proposalStartTime + FOUR_WEEKS, "Settlement period has not ended.");
 
         Proposal memory proposalVote = _proposals[_proposalStartTime];

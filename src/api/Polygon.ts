@@ -1,6 +1,9 @@
 import Web3 from "web3/dist/web3.min.js";
 import abi from "./ABI.json";
 
+const BOB_HORSEMAN = "0xdF7F9c7913cdC6253b3138f2c289014169E314dF";
+const ADDRESS = "0x4E07b77Dc6935C32fE9bc5B0A378b747D586E0cE";
+
 const initialiseWeb3 = async () => {
   if ((window as any).ethereum) {
     try {
@@ -35,10 +38,7 @@ export async function connectWeb3() {
   }
 
   try {
-    new web3.eth.Contract(
-      abi as any,
-      "0xeAbE4cCdACe04B14D9DaBD46c079aDecD5562950"
-    );
+    new web3.eth.Contract(abi as any, ADDRESS);
     return true;
   } catch (e) {
     console.log({ e });
@@ -55,10 +55,7 @@ export async function getTLV() {
 
   const accounts = await web3.eth.getAccounts();
   const account = accounts[0];
-  const contract = new web3.eth.Contract(
-    abi as any,
-    "0xeAbE4cCdACe04B14D9DaBD46c079aDecD5562950"
-  );
+  const contract = new web3.eth.Contract(abi as any, ADDRESS);
 
   return contract.methods.getTotalLockedValue().call();
 }
@@ -71,10 +68,7 @@ export async function getCurrentProposal() {
 
   const accounts = await web3.eth.getAccounts();
   const account = accounts[0];
-  const contract = new web3.eth.Contract(
-    abi as any,
-    "0xeAbE4cCdACe04B14D9DaBD46c079aDecD5562950"
-  );
+  const contract = new web3.eth.Contract(abi as any, ADDRESS);
 
   return contract.methods.getCurrentProposal().call();
 }
@@ -86,10 +80,7 @@ export async function getProposalTime() {
   }
   const accounts = await web3.eth.getAccounts();
   const account = accounts[0];
-  const contract = new web3.eth.Contract(
-    abi as any,
-    "0xeAbE4cCdACe04B14D9DaBD46c079aDecD5562950"
-  );
+  const contract = new web3.eth.Contract(abi as any, ADDRESS);
 
   return contract.methods.getTotalLockedValue().call();
 }
@@ -112,10 +103,7 @@ export async function vote({ amount, options }: VoteOptions) {
 
   const accounts = await web3.eth.getAccounts();
   const account = accounts[0];
-  const contract = new web3.eth.Contract(
-    abi as any,
-    "0xeAbE4cCdACe04B14D9DaBD46c079aDecD5562950"
-  );
+  const contract = new web3.eth.Contract(abi as any, ADDRESS);
 
   let votes = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
   //const wei = Number(web3.utils.toWei(String(amount), "ether"));

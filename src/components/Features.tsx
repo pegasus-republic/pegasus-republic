@@ -168,7 +168,7 @@ export default function Features() {
                     CEO at Pegasus Republic
                   </p>
                   <p className="text-base font-medium text-white">
-                    0x123.... - Burn
+                    0xdF7F9c7913cdC6253b3138f2c289014169E314dF - Burn Address
                   </p>
                 </footer>
               </blockquote>

@@ -156,7 +156,7 @@ export default function Example() {
                     <h1 className="mt-4 text-4xl tracking-tight font-extrabold text-white sm:mt-5 sm:text-6xl lg:mt-6 xl:text-6xl">
                       <span className="block">Pegasus Republic</span>
                       <span className="pb-3 block bg-clip-text text-transparent bg-gradient-to-r from-teal-200 to-cyan-400 sm:pb-5">
-                        A better SafeMoon
+                        Am improved SafeMoon
                       </span>
                     </h1>
                     <p className="text-base text-gray-300 sm:text-xl lg:text-lg xl:text-xl">
@@ -165,7 +165,7 @@ export default function Example() {
                     </p>
                     <h1 className="mt-4 text-2xl tracking-tight font-extrabold text-white sm:mt-2 sm:text-2xl lg:mt-3 xl:text-2xl">
                       <span className="pb-3 block bg-clip-text text-transparent bg-gradient-to-r from-teal-200 to-cyan-400 sm:pb-5">
-                        0x123....
+                        0x4E07b77Dc6935C32fE9bc5B0A378b747D586E0cE
                       </span>
                     </h1>
                     <div className="mt-10 sm:mt-12">
@@ -221,8 +221,9 @@ export default function Example() {
 
                 <p className="mt-5 max-w-prose mx-auto text-xl text-gray-500">
                   Pegasus Republic is a fork of the SafeMoon contract that
-                  replaces developer manipulation with community voting. Now you
-                  can decide the burn, tax, interest and inflation rates.
+                  replaces developer control and influence with community
+                  voting. Now you can decide the burn, tax, interest and
+                  inflation rates.
                 </p>
               </div>
             </div>
