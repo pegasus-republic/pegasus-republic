@@ -6,20 +6,29 @@ import {
   ExclamationCircleIcon,
   LockClosedIcon,
 } from "@heroicons/react/outline";
-import { getTLV, connectWeb3, vote } from "../api/Polygon";
+import {
+  getTLV,
+  connectWeb3,
+  vote,
+  Option,
+  getCurrentProposal,
+} from "../api/Polygon";
 
 const reflectionOptions: Option[] = [
   {
     title: "Decrease reflection",
     percent: "2%",
+    voteIndex: 0,
   },
   {
     title: "Maintain reflection",
     percent: "3%",
+    voteIndex: 1,
   },
   {
     title: "Increase reflection",
     percent: "4%",
+    voteIndex: 2,
   },
 ];
 
@@ -27,14 +36,17 @@ const liqudityOptions: Option[] = [
   {
     title: "Decrease LP",
     percent: "4%",
+    voteIndex: 3,
   },
   {
     title: "Maintain LP",
     percent: "5%",
+    voteIndex: 4,
   },
   {
     title: "Increase LP",
     percent: "6%",
+    voteIndex: 5,
   },
 ];
 
@@ -42,14 +54,17 @@ const burnOptions: Option[] = [
   {
     title: "Decrease Burn",
     percent: "1%",
+    voteIndex: 6,
   },
   {
     title: "Maintain Burn",
     percent: "3%",
+    voteIndex: 7,
   },
   {
     title: "Increase Burn",
     percent: "4%",
+    voteIndex: 8,
   },
 ];
 
@@ -57,14 +72,17 @@ const interestOptions: Option[] = [
   {
     title: "Decrease Interest",
     percent: "0.4%",
+    voteIndex: 9,
   },
   {
     title: "Maintain Interest",
     percent: "0.5%",
+    voteIndex: 10,
   },
   {
     title: "Increase Interest",
     percent: "0.6%",
+    voteIndex: 11,
   },
 ];
 
@@ -72,21 +90,31 @@ function classNames(...classes: string[]) {
   return classes.filter(Boolean).join(" ");
 }
 
-type Option = {
-  title: string;
-  percent: string;
-};
-
 interface VoteProps {
   options: Option[];
   selected: Option;
   select: (option: Option) => void;
+  isDisabled: boolean;
+  currentProposal: string[];
+  totalValueLocked: number;
 }
-export const Vote: React.FC<VoteProps> = ({ options, selected, select }) => {
+export const Vote: React.FC<VoteProps> = ({
+  options,
+  selected,
+  select,
+  isDisabled,
+  currentProposal,
+  totalValueLocked,
+}) => {
   return (
     <>
       <RadioGroup value={selected} onChange={select}>
-        <div className="mt-4 grid grid-cols-3 gap-y-6 sm:grid-cols-3 gap-x-4">
+        <div
+          className={classNames(
+            "mt-4 grid grid-cols-3 gap-y-6 sm:grid-cols-3 gap-x-4",
+            isDisabled ? "opacity-50 cursor-not-allowed" : "cursor-pointer"
+          )}
+        >
           {options.map((option) => (
             <RadioGroup.Option
               key={option.title}
@@ -95,7 +123,7 @@ export const Vote: React.FC<VoteProps> = ({ options, selected, select }) => {
                 classNames(
                   checked ? "border-transparent" : "border-gray-300",
                   active ? "ring-2 ring-indigo-500" : "",
-                  "relative bg-white border rounded-lg shadow-sm p-4 flex cursor-pointer focus:outline-none"
+                  "relative bg-white border rounded-lg shadow-sm p-4 flex  focus:outline-none"
                 )
               }
             >
@@ -117,6 +145,7 @@ export const Vote: React.FC<VoteProps> = ({ options, selected, select }) => {
                       {option.percent}
                     </RadioGroup.Description>
                   </div>
+
                   <CheckCircleIcon
                     className={classNames(
                       !checked ? "invisible" : "",
@@ -132,6 +161,15 @@ export const Vote: React.FC<VoteProps> = ({ options, selected, select }) => {
                     )}
                     aria-hidden="true"
                   />
+                  <span className="text-indigo-700 text-xs font-bold overflow-visible absolute bottom-0">
+                    {currentProposal.length === 0 && "33%"}
+                    {currentProposal.length > 0 &&
+                      `${(
+                        (Number(currentProposal[option.voteIndex]) /
+                          (totalValueLocked / 4)) *
+                        100
+                      ).toFixed(1)}% votes`}
+                  </span>
                 </>
               )}
             </RadioGroup.Option>
@@ -153,6 +191,10 @@ export default function Proposal() {
   const [hasWeb3, setHasWeb3] = useState(false);
   const [hasVoted, setHasVoted] = useState(false);
 
+  // Array of 12 votes
+  const [currentProposal, setCurrentProposal] = useState<string[]>([]);
+  const [totalValueLocked, setTotalValueLocked] = useState(0);
+
   const interest = 1.05;
 
   const connect = async () => {
@@ -161,12 +203,19 @@ export default function Proposal() {
     setHasWeb3(!!web3);
 
     const tlv = await getTLV();
+    const currentProposal = await getCurrentProposal();
+    setCurrentProposal(currentProposal);
     console.log({ tlv });
+    setTotalValueLocked(tlv);
+    console.log({ currentProposal });
   };
 
   const submit = async () => {
     setIsVoting(true);
-    await vote();
+    await vote({
+      amount,
+      options: [reflectionVote, liqudityFeeVote, burnVote, interestVote],
+    });
     setHasVoted(true);
     setIsVoting(false);
   };
@@ -188,25 +237,55 @@ export default function Proposal() {
             <b className="text-gray-900 underline">0.6%</b> interest on your
             staked tokens by taking part in the governing process.
           </p>
+          {!hasWeb3 && (
+            <>
+              <button
+                type="button"
+                onClick={connect}
+                className="block flex items-center justify-center mt-2 w-full py-3 px-4 rounded-md shadow bg-gradient-to-r disabled:opacity-50 from-teal-500 to-cyan-600 text-white font-medium hover:from-teal-600 hover:to-cyan-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-cyan-400 focus:ring-offset-gray-900"
+              >
+                Connect to Metamask to Vote
+              </button>
+            </>
+          )}
+          {hasWeb3 && (
+            <h1 className="mt-4 text-2xl tracking-tight font-extrabold text-white sm:mt-2 sm:text-2xl lg:mt-3 xl:text-2xl">
+              <span className="block bg-clip-text text-transparent bg-gradient-to-r text-indigo-600">
+                TLV: {totalValueLocked || "-"}
+              </span>
+            </h1>
+          )}
           <Vote
             options={reflectionOptions}
             selected={reflectionVote}
             select={setReflectionVote}
+            isDisabled={!hasWeb3}
+            currentProposal={currentProposal}
+            totalValueLocked={totalValueLocked}
           />
           <Vote
             options={burnOptions}
             selected={burnVote}
             select={setBurnVote}
+            isDisabled={!hasWeb3}
+            currentProposal={currentProposal}
+            totalValueLocked={totalValueLocked}
           />
           <Vote
             options={interestOptions}
             selected={interestVote}
             select={setInterestVote}
+            isDisabled={!hasWeb3}
+            currentProposal={currentProposal}
+            totalValueLocked={totalValueLocked}
           />
           <Vote
             options={liqudityOptions}
             selected={liqudityFeeVote}
             select={setLiqudityFeeVote}
+            isDisabled={!hasWeb3}
+            currentProposal={currentProposal}
+            totalValueLocked={totalValueLocked}
           />
 
           <div className="mt-4">
@@ -255,26 +334,7 @@ export default function Proposal() {
               </div>
             </div>
 
-            {!hasWeb3 ? (
-              <>
-                <button
-                  type="button"
-                  onClick={connect}
-                  className="block flex items-center justify-center mt-2 w-full py-3 px-4 rounded-md shadow bg-gradient-to-r disabled:opacity-50 from-teal-500 to-cyan-600 text-white font-medium hover:from-teal-600 hover:to-cyan-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-cyan-400 focus:ring-offset-gray-900"
-                >
-                  Connect to Metamask and Vote
-                </button>
-                <div className="flex mt-1">
-                  <LockClosedIcon
-                    className="h-5 w-5 text-gray-400 mr-2"
-                    aria-hidden="true"
-                  />
-                  <span className="text-sm text-gray-500">
-                    Not connected to Polygon Network
-                  </span>
-                </div>
-              </>
-            ) : hasVoted ? (
+            {hasVoted ? (
               <div className="block flex items-center justify-center mt-4">
                 <CheckCircleIcon className="h-5 w-5 text-cyan-500" />
                 <span className="text-xl text-cyan-500">
@@ -314,6 +374,17 @@ export default function Proposal() {
                   )}
                 </button>
               </>
+            )}
+            {!hasWeb3 && (
+              <div className="flex mt-1">
+                <LockClosedIcon
+                  className="h-5 w-5 text-gray-400 mr-2"
+                  aria-hidden="true"
+                />
+                <span className="text-sm text-gray-500">
+                  Not connected to Polygon Network
+                </span>
+              </div>
             )}
           </div>
         </div>

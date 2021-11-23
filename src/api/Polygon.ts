@@ -59,6 +59,18 @@ export async function getTLV() {
   return contract.methods.getTotalLockedValue().call();
 }
 
+export async function getCurrentProposal() {
+  const web3 = await getWeb3();
+  const accounts = await web3.eth.getAccounts();
+  const account = accounts[0];
+  const contract = new web3.eth.Contract(
+    abi as any,
+    "0xeAbE4cCdACe04B14D9DaBD46c079aDecD5562950"
+  );
+
+  return contract.methods.getCurrentProposal().call();
+}
+
 export async function getProposalTime() {
   const web3 = await getWeb3();
   const accounts = await web3.eth.getAccounts();
@@ -71,7 +83,17 @@ export async function getProposalTime() {
   return contract.methods.getTotalLockedValue().call();
 }
 
-export async function vote() {
+export type Option = {
+  title: string;
+  percent: string;
+  voteIndex: number;
+};
+
+interface VoteOptions {
+  amount: number;
+  options: Option[];
+}
+export async function vote({ amount, options }: VoteOptions) {
   const web3 = await getWeb3();
   const accounts = await web3.eth.getAccounts();
   const account = accounts[0];
@@ -80,9 +102,19 @@ export async function vote() {
     "0xeAbE4cCdACe04B14D9DaBD46c079aDecD5562950"
   );
 
+  let votes = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+  //const wei = Number(web3.utils.toWei(String(amount), "ether"));
+  const amountForEachOption = amount / options.length;
+
+  options.forEach((option) => {
+    votes[option.voteIndex] = amountForEachOption;
+  });
+  console.log({ votes });
+  console.log({ amountForEachOption });
+
   return new Promise((resolve, reject) => {
     contract.methods
-      .castVote([0, 0, 5000, 0, 0, 0, 0, 7000, 0, 0, 0, 0])
+      .castVote(votes)
       .send({ from: account })
       .on("error", function (error: Error) {
         console.log({ error });
