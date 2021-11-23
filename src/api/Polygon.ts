@@ -2,7 +2,6 @@ import Web3 from "web3/dist/web3.min.js";
 import abi from "./ABI.json";
 
 const initialiseWeb3 = async () => {
-  await new Promise((res) => setTimeout(res, 3000));
   console.log({ eth: window.ethereum });
   if ((window as any).ethereum) {
     try {
@@ -29,7 +28,7 @@ async function getWeb3() {
   return web3;
 }
 
-export async function isConnected() {
+export async function connectWeb3() {
   const web3 = await getWeb3();
 
   if (!web3) {

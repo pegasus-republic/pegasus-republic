@@ -166,8 +166,166 @@ export default function Features() {
                   <p className="text-base font-medium text-cyan-100">
                     CEO at Pegasus Republic
                   </p>
+                  <p className="text-base font-medium text-white">
+                    0x123.... - Burn
+                  </p>
                 </footer>
               </blockquote>
+            </div>
+          </div>
+        </div>
+
+        <div className="bg-white">
+          <div className="max-w-7xl mx-auto py-16 px-4 sm:py-24 sm:px-6 lg:px-8">
+            <div className="lg:grid lg:grid-cols-2 lg:gap-8">
+              <h2 className="max-w-md mx-auto text-3xl font-extrabold text-cyan-600 text-center lg:max-w-xl lg:text-left">
+                Find us on the following platforms
+              </h2>
+              <div className="flow-root self-center mt-8 lg:mt-0">
+                <div className="-mt-4 -ml-8 flex flex-wrap justify-between lg:-ml-4">
+                  <div className="mt-4 ml-8 flex flex-grow flex-shrink-0 justify-center lg:flex-grow-0 lg:ml-4">
+                    <img
+                      className="h-12"
+                      src="https://camo.githubusercontent.com/6214be9321b2b4a1ad8483414fdbe193f2fe4aa4d41de52efc023eb5ef0206cd/68747470733a2f2f6273637363616e2e636f6d2f696d616765732f6c6f676f2d6273637363616e2e7376673f763d302e302e32"
+                      alt="Workcation"
+                    />
+                  </div>
+                  <div className="mt-4 ml-8 flex flex-grow flex-shrink-0 justify-center lg:flex-grow-0 lg:ml-4">
+                    <img
+                      className="h-12"
+                      src="https://static.coingecko.com/s/coingecko-branding-guide-4f5245361f7a47478fa54c2c57808a9e05d31ac7ca498ab189a3827d6000e22b.png"
+                      alt="Tuple"
+                    />
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div className="relative py-16 bg-white overflow-hidden">
+          <div className="hidden lg:block lg:absolute lg:inset-y-0 lg:h-full lg:w-full">
+            <div
+              className="relative h-full text-lg max-w-prose mx-auto"
+              aria-hidden="true"
+            >
+              <svg
+                className="absolute top-12 left-full transform translate-x-32"
+                width={404}
+                height={384}
+                fill="none"
+                viewBox="0 0 404 384"
+              >
+                <defs>
+                  <pattern
+                    id="74b3fd99-0a6f-4271-bef2-e80eeafdf357"
+                    x={0}
+                    y={0}
+                    width={20}
+                    height={20}
+                    patternUnits="userSpaceOnUse"
+                  >
+                    <rect
+                      x={0}
+                      y={0}
+                      width={4}
+                      height={4}
+                      className="text-gray-200"
+                      fill="currentColor"
+                    />
+                  </pattern>
+                </defs>
+                <rect
+                  width={404}
+                  height={384}
+                  fill="url(#74b3fd99-0a6f-4271-bef2-e80eeafdf357)"
+                />
+              </svg>
+              <svg
+                className="absolute top-1/2 right-full transform -translate-y-1/2 -translate-x-32"
+                width={404}
+                height={384}
+                fill="none"
+                viewBox="0 0 404 384"
+              >
+                <defs>
+                  <pattern
+                    id="f210dbf6-a58d-4871-961e-36d5016a0f49"
+                    x={0}
+                    y={0}
+                    width={20}
+                    height={20}
+                    patternUnits="userSpaceOnUse"
+                  >
+                    <rect
+                      x={0}
+                      y={0}
+                      width={4}
+                      height={4}
+                      className="text-gray-200"
+                      fill="currentColor"
+                    />
+                  </pattern>
+                </defs>
+                <rect
+                  width={404}
+                  height={384}
+                  fill="url(#f210dbf6-a58d-4871-961e-36d5016a0f49)"
+                />
+              </svg>
+              <svg
+                className="absolute bottom-12 left-full transform translate-x-32"
+                width={404}
+                height={384}
+                fill="none"
+                viewBox="0 0 404 384"
+              >
+                <defs>
+                  <pattern
+                    id="d3eb07ae-5182-43e6-857d-35c643af9034"
+                    x={0}
+                    y={0}
+                    width={20}
+                    height={20}
+                    patternUnits="userSpaceOnUse"
+                  >
+                    <rect
+                      x={0}
+                      y={0}
+                      width={4}
+                      height={4}
+                      className="text-gray-200"
+                      fill="currentColor"
+                    />
+                  </pattern>
+                </defs>
+                <rect
+                  width={404}
+                  height={384}
+                  fill="url(#d3eb07ae-5182-43e6-857d-35c643af9034)"
+                />
+              </svg>
+            </div>
+          </div>
+          <div className="relative px-4 sm:px-6 lg:px-8">
+            <div className="text-lg max-w-prose mx-auto">
+              <h1>
+                <span className="block text-base text-center text-cyan-600 font-semibold tracking-wide uppercase">
+                  No greedy developers and manipulation
+                </span>
+                <span className="mt-2 block text-3xl text-center leading-8 font-extrabold tracking-tight text-gray-900 sm:text-4xl">
+                  Free fair launch
+                </span>
+              </h1>
+              <p className="mt-8 text-xl text-gray-500 leading-8 text-center">
+                In the spirit of community and equality, Pegasus Republic had no
+                pre-sale or ICO. Instead tokens were distributed for free. 10%
+                were distributed to charity addresses, 70% to addresses from a
+                range of social media platforms and 20% to the burn address of
+                Bob Horseman. Amongst the active addresses holdings were only
+                allocated in the range of 1-5% of the total supply to prevent a
+                single individual having too much influence.
+              </p>
             </div>
           </div>
         </div>

@@ -6,7 +6,7 @@ import {
   ExclamationCircleIcon,
   LockClosedIcon,
 } from "@heroicons/react/outline";
-import { getTLV, isConnected, vote } from "../api/Polygon";
+import { getTLV, connectWeb3, vote } from "../api/Polygon";
 
 const reflectionOptions: Option[] = [
   {
@@ -155,18 +155,14 @@ export default function Proposal() {
 
   const interest = 1.05;
 
-  useEffect(() => {
-    const load = async () => {
-      const web3 = await isConnected();
-      console.log({ web3 });
-      setHasWeb3(web3);
+  const connect = async () => {
+    const web3 = await connectWeb3();
+    console.log({ web3 });
+    setHasWeb3(!!web3);
 
-      const tlv = await getTLV();
-      console.log({ tlv });
-    };
-
-    load();
-  });
+    const tlv = await getTLV();
+    console.log({ tlv });
+  };
 
   const submit = async () => {
     setIsVoting(true);
@@ -183,10 +179,14 @@ export default function Proposal() {
           <p className="mt-2 text-3xl font-extrabold text-gray-900 tracking-tight sm:text-4xl">
             Voting is Open
           </p>
+          <p className="mt-2 text-xl font-medium text-gray-400 tracking-tight sm:text-2xl">
+            23rd Nov - 30th Nov
+          </p>
           <p className="mt-5 max-w-prose mx-auto text-xl text-gray-500">
-            Every 4 weeks holders will have the chance to vote on a new proposal
-            to change the functioning tokenomics. Earn <b>0.6%</b> interest on
-            your staked tokens by taking part in the governing process.
+            Every 4 weeks holders have the chance to vote on a new proposal to
+            change the functioning tokenomics. Earn{" "}
+            <b className="text-gray-900 underline">0.6%</b> interest on your
+            staked tokens by taking part in the governing process.
           </p>
           <Vote
             options={reflectionOptions}
@@ -241,7 +241,7 @@ export default function Proposal() {
                 </div>
                 <div className="ml-3">
                   <h3 className="text-sm font-medium text-yellow-800">
-                    Funds will be locked until X.
+                    Funds will be locked until 23rd December.
                   </h3>
                   <div className="mt-2 text-sm text-yellow-700">
                     <p>
@@ -255,7 +255,26 @@ export default function Proposal() {
               </div>
             </div>
 
-            {hasVoted ? (
+            {!hasWeb3 ? (
+              <>
+                <button
+                  type="button"
+                  onClick={connect}
+                  className="block flex items-center justify-center mt-2 w-full py-3 px-4 rounded-md shadow bg-gradient-to-r disabled:opacity-50 from-teal-500 to-cyan-600 text-white font-medium hover:from-teal-600 hover:to-cyan-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-cyan-400 focus:ring-offset-gray-900"
+                >
+                  Connect to Metamask and Vote
+                </button>
+                <div className="flex mt-1">
+                  <LockClosedIcon
+                    className="h-5 w-5 text-gray-400 mr-2"
+                    aria-hidden="true"
+                  />
+                  <span className="text-sm text-gray-500">
+                    Not connected to Polygon Network
+                  </span>
+                </div>
+              </>
+            ) : hasVoted ? (
               <div className="block flex items-center justify-center mt-4">
                 <CheckCircleIcon className="h-5 w-5 text-cyan-500" />
                 <span className="text-xl text-cyan-500">
@@ -294,17 +313,6 @@ export default function Proposal() {
                     </svg>
                   )}
                 </button>
-                {!hasWeb3 && (
-                  <div className="flex mt-1">
-                    <LockClosedIcon
-                      className="h-5 w-5 text-gray-400 mr-2"
-                      aria-hidden="true"
-                    />
-                    <span className="text-sm text-gray-500">
-                      Not connected to Polygon Network
-                    </span>
-                  </div>
-                )}
               </>
             )}
           </div>

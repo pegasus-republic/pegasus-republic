@@ -163,6 +163,11 @@ export default function Example() {
                       A decentralized autonomous token where the community
                       control the inflation, tax, interest and burn rates.
                     </p>
+                    <h1 className="mt-4 text-2xl tracking-tight font-extrabold text-white sm:mt-2 sm:text-2xl lg:mt-3 xl:text-2xl">
+                      <span className="pb-3 block bg-clip-text text-transparent bg-gradient-to-r from-teal-200 to-cyan-400 sm:pb-5">
+                        0x123....
+                      </span>
+                    </h1>
                     <div className="mt-10 sm:mt-12">
                       <form
                         action="#"
