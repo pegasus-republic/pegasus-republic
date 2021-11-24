@@ -28,10 +28,10 @@ jobs:
           aws-region: ap-southeast-2
 
       - name: Deploy static site to S3 bucket
-        run: aws s3 sync ./dist/ s3://american-pegasus.com
+        run: aws s3 sync ./dist/ s3://pegasus-republic.com
 
-      # - name: Invalidate Cloudfront Distribution
-      #   uses: chetan/invalidate-cloudfront-action@master
-      #   env:
-      #     PATHS: "/*"
-      #     DISTRIBUTION: ELYUBARGP0CYQ
+      - name: Invalidate Cloudfront Distribution
+        uses: chetan/invalidate-cloudfront-action@master
+        env:
+          PATHS: "/*"
+          DISTRIBUTION: E3GE4XE35PBL7A
