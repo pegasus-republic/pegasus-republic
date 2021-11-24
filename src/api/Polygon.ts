@@ -2,7 +2,7 @@ import Web3 from "web3/dist/web3.min.js";
 import abi from "./ABI.json";
 
 const BOB_HORSEMAN = "0xdF7F9c7913cdC6253b3138f2c289014169E314dF";
-const ADDRESS = "0x4E07b77Dc6935C32fE9bc5B0A378b747D586E0cE";
+const ADDRESS = "0xA86E46a569c3F16efA17458221AE83a65324425B";
 
 const initialiseWeb3 = async () => {
   if ((window as any).ethereum) {
@@ -94,7 +94,7 @@ export async function getStakedAmount() {
   const account = accounts[0];
   const contract = new web3.eth.Contract(abi as any, ADDRESS);
 
-  return contract.methods.stakedAmount().call();
+  return contract.methods.getStakedAmount().call();
 }
 
 export type Option = {

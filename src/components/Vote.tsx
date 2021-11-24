@@ -304,7 +304,7 @@ export default function Proposal() {
                 type="number"
                 name="price"
                 id="price"
-                className="focus:ring-cyan-500 focus:border-cyan-500 block w-full pl-7 pr-12 sm:text-2xl border-gray-300 rounded-md disabled:opacity-30"
+                className="focus:ring-cyan-500 text-center focus:border-cyan-500 block w-full pl-7 pr-12 sm:text-2xl border-gray-300 rounded-md disabled:opacity-30"
                 placeholder="0.00"
                 aria-describedby="price-currency"
                 value={amount}
@@ -328,7 +328,7 @@ export default function Proposal() {
                 </div>
                 <div className="ml-3">
                   <h3 className="text-sm font-medium text-yellow-800">
-                    Funds will be locked until 23rd December.
+                    Funds will be locked until 24th December.
                   </h3>
                   <div className="mt-2 text-sm text-yellow-700">
                     <p>

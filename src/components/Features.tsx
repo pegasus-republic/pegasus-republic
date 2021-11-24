@@ -320,12 +320,11 @@ export default function Features() {
               </h1>
               <p className="mt-8 text-xl text-gray-500 leading-8 text-center">
                 In the spirit of community and equality, Pegasus Republic had no
-                pre-sale or ICO. Instead tokens were distributed for free. 10%
-                were distributed to charity addresses, 70% to addresses from a
-                range of social media platforms and 20% to the burn address of
-                Bob Horseman. Amongst the active addresses holdings were only
-                allocated in the range of 1-5% of the total supply to prevent a
-                single individual having too much influence.
+                pre-sale or ICO. Instead tokens were distributed for free. 80%
+                to addresses from a range of telegram chats and 20% to the burn
+                address of Bob Horseman. Amongst the active addresses holdings
+                were only allocated in the range of 1-5% of the total supply to
+                prevent a single individual having too much influence.
               </p>
             </div>
           </div>

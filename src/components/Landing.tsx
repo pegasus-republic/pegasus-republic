@@ -165,7 +165,7 @@ export default function Example() {
                     </p>
                     <h1 className="mt-4 text-2xl tracking-tight font-extrabold text-white sm:mt-2 sm:text-2xl lg:mt-3 xl:text-2xl">
                       <span className="pb-3 block bg-clip-text text-transparent bg-gradient-to-r from-teal-200 to-cyan-400 sm:pb-5">
-                        0x4E07b77Dc6935C32fE9bc5B0A378b747D586E0cE
+                        0xA86E46a569c3F16efA17458221AE83a65324425B
                       </span>
                     </h1>
                     <div className="mt-10 sm:mt-12">
