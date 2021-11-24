@@ -85,6 +85,18 @@ export async function getProposalTime() {
   return contract.methods.getTotalLockedValue().call();
 }
 
+export async function getStakedAmount() {
+  const web3 = await getWeb3();
+  if (!web3) {
+    return 0;
+  }
+  const accounts = await web3.eth.getAccounts();
+  const account = accounts[0];
+  const contract = new web3.eth.Contract(abi as any, ADDRESS);
+
+  return contract.methods.stakedAmount().call();
+}
+
 export type Option = {
   title: string;
   percent: string;

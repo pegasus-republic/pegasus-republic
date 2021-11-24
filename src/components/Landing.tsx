@@ -40,10 +40,10 @@ import {
 import { ChevronRightIcon, ExternalLinkIcon } from "@heroicons/react/solid";
 
 const navigation = [
-  { name: "Product", href: "#" },
-  { name: "Features", href: "#" },
-  { name: "Marketplace", href: "#" },
-  { name: "Company", href: "#" },
+  { name: "Buy", href: "#buy" },
+  { name: "Vote", href: "#vote" },
+  { name: "Features", href: "#features" },
+  { name: "White Paper (Coming soon)" },
 ];
 
 export default function Example() {

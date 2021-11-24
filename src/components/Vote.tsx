@@ -12,6 +12,8 @@ import {
   vote,
   Option,
   getCurrentProposal,
+  stakedAmount,
+  getStakedAmount,
 } from "../api/Polygon";
 
 const reflectionOptions: Option[] = [
@@ -190,6 +192,7 @@ export default function Proposal() {
 
   const [hasWeb3, setHasWeb3] = useState(false);
   const [hasVoted, setHasVoted] = useState(false);
+  const [stakedAmount, setStakedAmount] = useState(false);
 
   // Array of 12 votes
   const [currentProposal, setCurrentProposal] = useState<string[]>([]);
@@ -208,6 +211,10 @@ export default function Proposal() {
     console.log({ tlv });
     setTotalValueLocked(tlv);
     console.log({ currentProposal });
+
+    const stakedAmount = await getStakedAmount();
+    console.log({ stakedAmount });
+    setStakedAmount(stakedAmount);
   };
 
   const submit = async () => {
@@ -223,13 +230,13 @@ export default function Proposal() {
   return (
     <>
       {/* Feature section with grid */}
-      <div className="relative bg-white pb-16 sm:pb-24">
+      <div className="relative bg-white pb-16 sm:pb-24" id="vote">
         <div className="mx-auto max-w-md px-4 text-center sm:max-w-3xl sm:px-6 lg:px-8 lg:max-w-3xl">
           <p className="mt-2 text-3xl font-extrabold text-gray-900 tracking-tight sm:text-4xl">
             Voting is Open
           </p>
           <p className="mt-2 text-xl font-medium text-gray-400 tracking-tight sm:text-2xl">
-            23rd Nov - 30th Nov
+            Closes on December 1st
           </p>
           <p className="mt-5 max-w-prose mx-auto text-xl text-gray-500">
             Every 4 weeks holders have the chance to vote on a new proposal to
@@ -297,11 +304,12 @@ export default function Proposal() {
                 type="number"
                 name="price"
                 id="price"
-                className="focus:ring-cyan-500 focus:border-cyan-500 block w-full pl-7 pr-12 sm:text-2xl border-gray-300 rounded-md"
+                className="focus:ring-cyan-500 focus:border-cyan-500 block w-full pl-7 pr-12 sm:text-2xl border-gray-300 rounded-md disabled:opacity-30"
                 placeholder="0.00"
                 aria-describedby="price-currency"
                 value={amount}
                 onChange={(e) => setAmount(Number(e.target.value))}
+                disabled={!hasWeb3 || !!stakedAmount || isVoting}
               />
               <div className="absolute inset-y-0 right-0 pr-3 flex items-center pointer-events-none">
                 <span className="text-gray-500 sm:text-sm" id="price-currency">

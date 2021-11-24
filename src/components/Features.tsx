@@ -79,7 +79,7 @@ export default function Features() {
   return (
     <>
       {/* Feature section with grid */}
-      <div className="relative bg-white pb-16 sm:pb-24 lg:pb-32">
+      <div className="relative bg-white pb-16 sm:pb-24 lg:pb-32" id="features">
         <div className="mx-auto max-w-md px-4 text-center sm:max-w-3xl sm:px-6 lg:px-8 lg:max-w-7xl">
           <h2 className="text-base font-semibold tracking-wider text-cyan-600 uppercase">
             Features
