@@ -1,6 +1,7 @@
 /* This example requires Tailwind CSS v2.0+ */
 import React, { useEffect, useState } from "react";
 import { RadioGroup } from "@headlessui/react";
+import BigNumber from "bignumber.js";
 import { CheckCircleIcon } from "@heroicons/react/solid";
 import {
   ExclamationCircleIcon,
@@ -12,8 +13,9 @@ import {
   vote,
   Option,
   getCurrentProposal,
-  stakedAmount,
   getStakedAmount,
+  balance,
+  Votes,
 } from "../api/Polygon";
 
 const reflectionOptions: Option[] = [
@@ -21,52 +23,40 @@ const reflectionOptions: Option[] = [
     title: "Decrease reflection",
     percent: "2%",
     voteIndex: 2,
+    type: "decrease",
   },
   {
     title: "Maintain reflection",
     percent: "3%",
     voteIndex: 1,
+    type: "maintain",
   },
   {
     title: "Increase reflection",
     percent: "4%",
     voteIndex: 0,
-  },
-];
-
-const liqudityOptions: Option[] = [
-  {
-    title: "Decrease LP",
-    percent: "4%",
-    voteIndex: 5,
-  },
-  {
-    title: "Maintain LP",
-    percent: "5%",
-    voteIndex: 4,
-  },
-  {
-    title: "Increase LP",
-    percent: "6%",
-    voteIndex: 3,
+    type: "increase",
   },
 ];
 
 const burnOptions: Option[] = [
   {
     title: "Decrease Burn",
-    percent: "1%",
-    voteIndex: 8,
+    percent: "2%",
+    voteIndex: 5,
+    type: "decrease",
   },
   {
     title: "Maintain Burn",
     percent: "3%",
-    voteIndex: 7,
+    voteIndex: 4,
+    type: "maintain",
   },
   {
     title: "Increase Burn",
     percent: "4%",
-    voteIndex: 6,
+    voteIndex: 3,
+    type: "increase",
   },
 ];
 
@@ -74,17 +64,20 @@ const interestOptions: Option[] = [
   {
     title: "Decrease Interest",
     percent: "0.4%",
-    voteIndex: 11,
+    voteIndex: 8,
+    type: "decrease",
   },
   {
     title: "Maintain Interest",
     percent: "0.5%",
-    voteIndex: 10,
+    voteIndex: 7,
+    type: "maintain",
   },
   {
     title: "Increase Interest",
     percent: "0.6%",
-    voteIndex: 9,
+    voteIndex: 6,
+    type: "increase",
   },
 ];
 
@@ -97,20 +90,18 @@ interface VoteProps {
   selected: Option;
   select: (option: Option) => void;
   isDisabled: boolean;
-  currentProposal: string[];
-  totalValueLocked: number;
+  votePercentage?: number;
 }
 export const Vote: React.FC<VoteProps> = ({
   options,
   selected,
   select,
   isDisabled,
-  currentProposal,
-  totalValueLocked,
 }) => {
+  const value = options.find((option) => option.type === selected.type);
   return (
     <>
-      <RadioGroup value={selected} onChange={select}>
+      <RadioGroup value={value} onChange={select}>
         <div
           className={classNames(
             "mt-4 grid grid-cols-3 gap-y-6 sm:grid-cols-3 gap-x-4",
@@ -164,13 +155,9 @@ export const Vote: React.FC<VoteProps> = ({
                     aria-hidden="true"
                   />
                   <span className="text-cyan-700 text-xs font-bold overflow-visible absolute bottom-0">
-                    {currentProposal.length === 0 && "33%"}
-                    {currentProposal.length > 0 &&
-                      `${(
-                        (Number(currentProposal[option.voteIndex]) /
-                          (totalValueLocked / 4)) *
-                        100
-                      ).toFixed(1)}% votes`}
+                    {option.votedPercentage
+                      ? `${option.votedPercentage.toFixed(2)}%`
+                      : "33%"}
                   </span>
                 </>
               )}
@@ -186,7 +173,6 @@ export default function Proposal() {
   const [reflectionVote, setReflectionVote] = useState(reflectionOptions[1]);
   const [burnVote, setBurnVote] = useState(burnOptions[1]);
   const [interestVote, setInterestVote] = useState(interestOptions[1]);
-  const [liqudityFeeVote, setLiqudityFeeVote] = useState(liqudityOptions[1]);
   const [isVoting, setIsVoting] = useState(false);
   const [amount, setAmount] = useState(100000000);
 
@@ -194,8 +180,8 @@ export default function Proposal() {
   const [hasVoted, setHasVoted] = useState(false);
   const [stakedAmount, setStakedAmount] = useState(false);
 
-  // Array of 12 votes
-  const [currentProposal, setCurrentProposal] = useState<string[]>([]);
+  // Array of 9 votes
+  const [currentProposal, setCurrentProposal] = useState<Votes | null>(null);
   const [totalValueLocked, setTotalValueLocked] = useState(0);
 
   const interest = 1.05;
@@ -210,22 +196,116 @@ export default function Proposal() {
     setCurrentProposal(currentProposal);
     console.log({ tlv });
     setTotalValueLocked(tlv);
-    console.log({ currentProposal });
+
+    const myBalance = await balance();
+    setAmount(myBalance);
+    console.log({ myBalance });
 
     const stakedAmount = await getStakedAmount();
-    console.log({ stakedAmount });
-    setStakedAmount(stakedAmount);
+    if (stakedAmount) {
+      setHasVoted(!!stakedAmount);
+      setAmount(stakedAmount);
+    }
   };
 
   const submit = async () => {
     setIsVoting(true);
+
+    const amountForEachOption = Math.floor(amount / 3).toLocaleString(
+      "fullwide",
+      {
+        useGrouping: false,
+      }
+    );
+
     await vote({
       amount,
-      options: [reflectionVote, liqudityFeeVote, burnVote, interestVote],
+      options: {
+        increaseTax:
+          reflectionVote.type === "increase" ? amountForEachOption : 0,
+        maintainTax:
+          reflectionVote.type === "maintain" ? amountForEachOption : 0,
+        decreaseTax:
+          reflectionVote.type === "decrease" ? amountForEachOption : 0,
+        increaseBurn: burnVote.type === "increase" ? amountForEachOption : 0,
+        maintainBurn: burnVote.type === "maintain" ? amountForEachOption : 0,
+        decreaseBurn: burnVote.type === "decrease" ? amountForEachOption : 0,
+        increaseInterest:
+          interestVote.type === "increase" ? amountForEachOption : 0,
+        maintainInterest:
+          interestVote.type === "maintain" ? amountForEachOption : 0,
+        decreaseInterest:
+          interestVote.type === "decrease" ? amountForEachOption : 0,
+      },
     });
     setHasVoted(true);
     setIsVoting(false);
   };
+
+  const totalPerCategory = totalValueLocked / 3;
+
+  console.log({ currentProposal });
+  const updatedReflectionOptions: Option[] = !currentProposal
+    ? reflectionOptions
+    : [
+        {
+          ...reflectionOptions[0],
+          votedPercentage:
+            (Number(currentProposal.decreaseTax) / totalPerCategory) * 100,
+        },
+        {
+          ...reflectionOptions[1],
+          votedPercentage:
+            (Number(currentProposal.maintainTax) / totalPerCategory) * 100,
+        },
+        {
+          ...reflectionOptions[2],
+          votedPercentage:
+            (Number(currentProposal.increaseTax) / totalPerCategory) * 100,
+        },
+      ];
+
+  const updatedBurnOptions: Option[] = !currentProposal
+    ? burnOptions
+    : [
+        {
+          ...burnOptions[0],
+          votedPercentage:
+            (Number(currentProposal.decreaseBurn) / totalPerCategory) * 100,
+        },
+        {
+          ...burnOptions[1],
+          votedPercentage:
+            (Number(currentProposal.maintainBurn) / totalPerCategory) * 100,
+        },
+        {
+          ...burnOptions[2],
+          votedPercentage:
+            (Number(currentProposal.increaseBurn) / totalPerCategory) * 100,
+        },
+      ];
+
+  const updatedInterestOptions: Option[] = !currentProposal
+    ? interestOptions
+    : [
+        {
+          ...interestOptions[0],
+          votedPercentage:
+            (Number(currentProposal.decreaseInterest) / totalPerCategory) * 100,
+        },
+        {
+          ...interestOptions[1],
+          votedPercentage:
+            (Number(currentProposal.maintainInterest) / totalPerCategory) * 100,
+        },
+        {
+          ...interestOptions[2],
+          votedPercentage:
+            (Number(currentProposal.increaseInterest) / totalPerCategory) * 100,
+        },
+      ];
+
+  console.log({ reflectionVote });
 
   return (
     <>
@@ -241,7 +321,7 @@ export default function Proposal() {
           <p className="mt-5 max-w-prose mx-auto text-xl text-gray-500">
             Every 4 weeks holders have the chance to vote on a new proposal to
             change the functioning tokenomics. Earn{" "}
-            <b className="text-gray-900 underline">0.6%</b> interest on your
+            <b className="text-gray-900 underline">0.5%</b> interest on your
             staked tokens by taking part in the governing process.
           </p>
           {!hasWeb3 && (
@@ -263,85 +343,79 @@ export default function Proposal() {
             </h1>
           )}
           <Vote
-            options={reflectionOptions}
+            options={updatedReflectionOptions}
             selected={reflectionVote}
             select={setReflectionVote}
             isDisabled={!hasWeb3}
-            currentProposal={currentProposal}
-            totalValueLocked={totalValueLocked}
           />
           <Vote
-            options={burnOptions}
+            options={updatedBurnOptions}
             selected={burnVote}
             select={setBurnVote}
             isDisabled={!hasWeb3}
-            currentProposal={currentProposal}
-            totalValueLocked={totalValueLocked}
           />
           <Vote
-            options={interestOptions}
+            options={updatedInterestOptions}
             selected={interestVote}
             select={setInterestVote}
             isDisabled={!hasWeb3}
-            currentProposal={currentProposal}
-            totalValueLocked={totalValueLocked}
-          />
-          <Vote
-            options={liqudityOptions}
-            selected={liqudityFeeVote}
-            select={setLiqudityFeeVote}
-            isDisabled={!hasWeb3}
-            currentProposal={currentProposal}
-            totalValueLocked={totalValueLocked}
           />
 
           <div className="mt-4">
-            <div className="mt-1 relative rounded-md shadow-sm">
-              <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                <span className="text-gray-500 sm:text-sm">$</span>
-              </div>
-              <input
-                type="number"
-                name="price"
-                id="price"
-                className="focus:ring-cyan-500 text-center focus:border-cyan-500 block w-full pl-7 pr-12 sm:text-2xl border-gray-300 rounded-md disabled:opacity-30"
-                placeholder="0.00"
-                aria-describedby="price-currency"
-                value={amount}
-                onChange={(e) => setAmount(Number(e.target.value))}
-                disabled={!hasWeb3 || !!stakedAmount || isVoting}
-              />
-              <div className="absolute inset-y-0 right-0 pr-3 flex items-center pointer-events-none">
-                <span className="text-gray-500 sm:text-sm" id="price-currency">
-                  AP
-                </span>
-              </div>
-            </div>
-
-            <div className="rounded-md bg-yellow-50 p-4  mt-2">
-              <div className="flex">
-                <div className="flex-shrink-0">
-                  <ExclamationCircleIcon
-                    className="h-5 w-5 text-yellow-400"
-                    aria-hidden="true"
+            {!hasVoted && (
+              <>
+                <div className="mt-1 relative rounded-md shadow-sm">
+                  <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                    <span className="text-gray-500 sm:text-sm">$</span>
+                  </div>
+                  <input
+                    type="number"
+                    name="price"
+                    id="price"
+                    className="focus:ring-cyan-500 text-center focus:border-cyan-500 block w-full pl-7 pr-12 sm:text-2xl border-gray-300 rounded-md disabled:opacity-30"
+                    placeholder="0.00"
+                    aria-describedby="price-currency"
+                    value={amount}
+                    onChange={(e) => setAmount(Number(e.target.value))}
+                    disabled={!hasWeb3 || !!stakedAmount || isVoting}
                   />
-                </div>
-                <div className="ml-3">
-                  <h3 className="text-sm font-medium text-yellow-800">
-                    Funds will be locked until 24th December.
-                  </h3>
-                  <div className="mt-2 text-sm text-yellow-700">
-                    <p>
-                      Your tokens will be staked until the end of the proposal
-                      period and cannot be withdrawn until then. You will earn{" "}
-                      <b className="underline">${amount * interest}</b> for your
-                      staked amount. You can only vote once per proposal period.
-                    </p>
+                  <div className="absolute inset-y-0 right-0 pr-3 flex items-center pointer-events-none">
+                    <span
+                      className="text-gray-500 sm:text-sm"
+                      id="price-currency"
+                    >
+                      AP
+                    </span>
                   </div>
                 </div>
-              </div>
-            </div>
 
+                <div className="rounded-md bg-yellow-50 p-4  mt-2">
+                  <div className="flex">
+                    <div className="flex-shrink-0">
+                      <ExclamationCircleIcon
+                        className="h-5 w-5 text-yellow-400"
+                        aria-hidden="true"
+                      />
+                    </div>
+                    <div className="ml-3">
+                      <h3 className="text-sm font-medium text-yellow-800">
+                        Funds will be locked until 24th December.
+                      </h3>
+                      <div className="mt-2 text-sm text-yellow-700">
+                        <p>
+                          Your tokens will be staked until the end of the
+                          proposal period and cannot be withdrawn until then.
+                          You will earn{" "}
+                          <b className="underline">${amount * interest}</b> for
+                          your staked amount. You can only vote once per
+                          proposal period.
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </>
+            )}
             {hasVoted ? (
               <div className="block flex items-center justify-center mt-4">
                 <CheckCircleIcon className="h-5 w-5 text-cyan-500" />

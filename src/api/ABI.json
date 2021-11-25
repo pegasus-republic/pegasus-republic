@@ -74,21 +74,6 @@
           },
           {
             "internalType": "uint256",
-            "name": "increaseLiqudity",
-            "type": "uint256"
-          },
-          {
-            "internalType": "uint256",
-            "name": "maintainLiqudity",
-            "type": "uint256"
-          },
-          {
-            "internalType": "uint256",
-            "name": "decreaseLiqudity",
-            "type": "uint256"
-          },
-          {
-            "internalType": "uint256",
             "name": "increaseBurn",
             "type": "uint256"
           },
@@ -166,24 +151,6 @@
     "type": "function"
   },
   {
-    "inputs": [
-      {
-        "internalType": "address",
-        "name": "recipient",
-        "type": "address"
-      },
-      {
-        "internalType": "uint256",
-        "name": "amount",
-        "type": "uint256"
-      }
-    ],
-    "name": "donate",
-    "outputs": [],
-    "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
     "inputs": [],
     "name": "govern",
     "outputs": [],
@@ -213,57 +180,6 @@
     ],
     "stateMutability": "nonpayable",
     "type": "function"
-  },
-  {
-    "anonymous": false,
-    "inputs": [
-      {
-        "indexed": false,
-        "internalType": "uint256",
-        "name": "minTokensBeforeSwap",
-        "type": "uint256"
-      }
-    ],
-    "name": "MinTokensBeforeSwapUpdated",
-    "type": "event"
-  },
-  {
-    "anonymous": false,
-    "inputs": [
-      {
-        "indexed": false,
-        "internalType": "uint256",
-        "name": "tokensSwapped",
-        "type": "uint256"
-      },
-      {
-        "indexed": false,
-        "internalType": "uint256",
-        "name": "ethReceived",
-        "type": "uint256"
-      },
-      {
-        "indexed": false,
-        "internalType": "uint256",
-        "name": "tokensIntoLiqudity",
-        "type": "uint256"
-      }
-    ],
-    "name": "SwapAndLiquify",
-    "type": "event"
-  },
-  {
-    "anonymous": false,
-    "inputs": [
-      {
-        "indexed": false,
-        "internalType": "bool",
-        "name": "enabled",
-        "type": "bool"
-      }
-    ],
-    "name": "SwapAndLiquifyEnabledUpdated",
-    "type": "event"
   },
   {
     "inputs": [
@@ -363,32 +279,6 @@
   {
     "inputs": [],
     "name": "_getRate",
-    "outputs": [
-      {
-        "internalType": "uint256",
-        "name": "",
-        "type": "uint256"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [],
-    "name": "_liquidityFee",
-    "outputs": [
-      {
-        "internalType": "uint256",
-        "name": "",
-        "type": "uint256"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [],
-    "name": "_maxTxAmount",
     "outputs": [
       {
         "internalType": "uint256",
@@ -504,21 +394,6 @@
           },
           {
             "internalType": "uint256",
-            "name": "increaseLiqudity",
-            "type": "uint256"
-          },
-          {
-            "internalType": "uint256",
-            "name": "maintainLiqudity",
-            "type": "uint256"
-          },
-          {
-            "internalType": "uint256",
-            "name": "decreaseLiqudity",
-            "type": "uint256"
-          },
-          {
-            "internalType": "uint256",
             "name": "increaseBurn",
             "type": "uint256"
           },
@@ -612,21 +487,6 @@
           {
             "internalType": "uint256",
             "name": "decreaseTax",
-            "type": "uint256"
-          },
-          {
-            "internalType": "uint256",
-            "name": "increaseLiqudity",
-            "type": "uint256"
-          },
-          {
-            "internalType": "uint256",
-            "name": "maintainLiqudity",
-            "type": "uint256"
-          },
-          {
-            "internalType": "uint256",
-            "name": "decreaseLiqudity",
             "type": "uint256"
           },
           {
@@ -803,51 +663,12 @@
   },
   {
     "inputs": [],
-    "name": "totalFees",
-    "outputs": [
-      {
-        "internalType": "uint256",
-        "name": "",
-        "type": "uint256"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [],
     "name": "totalSupply",
     "outputs": [
       {
         "internalType": "uint256",
         "name": "",
         "type": "uint256"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [],
-    "name": "uniswapV2Pair",
-    "outputs": [
-      {
-        "internalType": "address",
-        "name": "",
-        "type": "address"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [],
-    "name": "uniswapV2Router",
-    "outputs": [
-      {
-        "internalType": "contract IUniswapV2Router02",
-        "name": "",
-        "type": "address"
       }
     ],
     "stateMutability": "view",

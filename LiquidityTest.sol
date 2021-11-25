@@ -3,6 +3,7 @@
    Fork of SafeMoon that introduces voting so community can change tokenomics.
 
    #PegasusRepublic initial tokenomics:
+   3% fee auto add to the liquidity pool to locked forever when selling
    2% fee auto distribute to all holders
    I created a black hole so #Bee token will deflate itself in supply with every transaction
    50% Supply is burned at start.
@@ -392,15 +393,223 @@ library Address {
     }
 }
 
+// pragma solidity >=0.5.0;
+
+interface IUniswapV2Factory {
+    event PairCreated(address indexed token0, address indexed token1, address pair, uint);
+
+    function feeTo() external view returns (address);
+    function feeToSetter() external view returns (address);
+
+    function getPair(address tokenA, address tokenB) external view returns (address pair);
+    function allPairs(uint) external view returns (address pair);
+    function allPairsLength() external view returns (uint);
+
+    function createPair(address tokenA, address tokenB) external returns (address pair);
+
+    function setFeeTo(address) external;
+    function setFeeToSetter(address) external;
+}
+
+
+// pragma solidity >=0.5.0;
+
+interface IUniswapV2Pair {
+    event Approval(address indexed owner, address indexed spender, uint value);
+    event Transfer(address indexed from, address indexed to, uint value);
+
+    function name() external pure returns (string memory);
+    function symbol() external pure returns (string memory);
+    function decimals() external pure returns (uint8);
+    function totalSupply() external view returns (uint);
+    function balanceOf(address owner) external view returns (uint);
+    function allowance(address owner, address spender) external view returns (uint);
+
+    function approve(address spender, uint value) external returns (bool);
+    function transfer(address to, uint value) external returns (bool);
+    function transferFrom(address from, address to, uint value) external returns (bool);
+
+    function DOMAIN_SEPARATOR() external view returns (bytes32);
+    function PERMIT_TYPEHASH() external pure returns (bytes32);
+    function nonces(address owner) external view returns (uint);
+
+    function permit(address owner, address spender, uint value, uint deadline, uint8 v, bytes32 r, bytes32 s) external;
+
+    event Mint(address indexed sender, uint amount0, uint amount1);
+    event Burn(address indexed sender, uint amount0, uint amount1, address indexed to);
+    event Swap(
+        address indexed sender,
+        uint amount0In,
+        uint amount1In,
+        uint amount0Out,
+        uint amount1Out,
+        address indexed to
+    );
+    event Sync(uint112 reserve0, uint112 reserve1);
+
+    function MINIMUM_LIQUIDITY() external pure returns (uint);
+    function factory() external view returns (address);
+    function token0() external view returns (address);
+    function token1() external view returns (address);
+    function getReserves() external view returns (uint112 reserve0, uint112 reserve1, uint32 blockTimestampLast);
+    function price0CumulativeLast() external view returns (uint);
+    function price1CumulativeLast() external view returns (uint);
+    function kLast() external view returns (uint);
+
+    function mint(address to) external returns (uint liquidity);
+    function burn(address to) external returns (uint amount0, uint amount1);
+    function swap(uint amount0Out, uint amount1Out, address to, bytes calldata data) external;
+    function skim(address to) external;
+    function sync() external;
+
+    function initialize(address, address) external;
+}
+
+// pragma solidity >=0.6.2;
+
+interface IUniswapV2Router01 {
+    function factory() external pure returns (address);
+    function WETH() external pure returns (address);
+
+    function addLiquidity(
+        address tokenA,
+        address tokenB,
+        uint amountADesired,
+        uint amountBDesired,
+        uint amountAMin,
+        uint amountBMin,
+        address to,
+        uint deadline
+    ) external returns (uint amountA, uint amountB, uint liquidity);
+    function addLiquidityETH(
+        address token,
+        uint amountTokenDesired,
+        uint amountTokenMin,
+        uint amountETHMin,
+        address to,
+        uint deadline
+    ) external payable returns (uint amountToken, uint amountETH, uint liquidity);
+    function removeLiquidity(
+        address tokenA,
+        address tokenB,
+        uint liquidity,
+        uint amountAMin,
+        uint amountBMin,
+        address to,
+        uint deadline
+    ) external returns (uint amountA, uint amountB);
+    function removeLiquidityETH(
+        address token,
+        uint liquidity,
+        uint amountTokenMin,
+        uint amountETHMin,
+        address to,
+        uint deadline
+    ) external returns (uint amountToken, uint amountETH);
+    function removeLiquidityWithPermit(
+        address tokenA,
+        address tokenB,
+        uint liquidity,
+        uint amountAMin,
+        uint amountBMin,
+        address to,
+        uint deadline,
+        bool approveMax, uint8 v, bytes32 r, bytes32 s
+    ) external returns (uint amountA, uint amountB);
+    function removeLiquidityETHWithPermit(
+        address token,
+        uint liquidity,
+        uint amountTokenMin,
+        uint amountETHMin,
+        address to,
+        uint deadline,
+        bool approveMax, uint8 v, bytes32 r, bytes32 s
+    ) external returns (uint amountToken, uint amountETH);
+    function swapExactTokensForTokens(
+        uint amountIn,
+        uint amountOutMin,
+        address[] calldata path,
+        address to,
+        uint deadline
+    ) external returns (uint[] memory amounts);
+    function swapTokensForExactTokens(
+        uint amountOut,
+        uint amountInMax,
+        address[] calldata path,
+        address to,
+        uint deadline
+    ) external returns (uint[] memory amounts);
+    function swapExactETHForTokens(uint amountOutMin, address[] calldata path, address to, uint deadline)
+        external
+        payable
+        returns (uint[] memory amounts);
+    function swapTokensForExactETH(uint amountOut, uint amountInMax, address[] calldata path, address to, uint deadline)
+        external
+        returns (uint[] memory amounts);
+    function swapExactTokensForETH(uint amountIn, uint amountOutMin, address[] calldata path, address to, uint deadline)
+        external
+        returns (uint[] memory amounts);
+    function swapETHForExactTokens(uint amountOut, address[] calldata path, address to, uint deadline)
+        external
+        payable
+        returns (uint[] memory amounts);
+
+    function quote(uint amountA, uint reserveA, uint reserveB) external pure returns (uint amountB);
+    function getAmountOut(uint amountIn, uint reserveIn, uint reserveOut) external pure returns (uint amountOut);
+    function getAmountIn(uint amountOut, uint reserveIn, uint reserveOut) external pure returns (uint amountIn);
+    function getAmountsOut(uint amountIn, address[] calldata path) external view returns (uint[] memory amounts);
+    function getAmountsIn(uint amountOut, address[] calldata path) external view returns (uint[] memory amounts);
+}
+
+
+
+// pragma solidity >=0.6.2;
+
+interface IUniswapV2Router02 is IUniswapV2Router01 {
+    function removeLiquidityETHSupportingFeeOnTransferTokens(
+        address token,
+        uint liquidity,
+        uint amountTokenMin,
+        uint amountETHMin,
+        address to,
+        uint deadline
+    ) external returns (uint amountETH);
+    function removeLiquidityETHWithPermitSupportingFeeOnTransferTokens(
+        address token,
+        uint liquidity,
+        uint amountTokenMin,
+        uint amountETHMin,
+        address to,
+        uint deadline,
+        bool approveMax, uint8 v, bytes32 r, bytes32 s
+    ) external returns (uint amountETH);
+
+    function swapExactTokensForTokensSupportingFeeOnTransferTokens(
+        uint amountIn,
+        uint amountOutMin,
+        address[] calldata path,
+        address to,
+        uint deadline
+    ) external;
+    function swapExactETHForTokensSupportingFeeOnTransferTokens(
+        uint amountOutMin,
+        address[] calldata path,
+        address to,
+        uint deadline
+    ) external payable;
+    function swapExactTokensForETHSupportingFeeOnTransferTokens(
+        uint amountIn,
+        uint amountOutMin,
+        address[] calldata path,
+        address to,
+        uint deadline
+    ) external;
+}
+
 
 contract PegasusRepublic is Context, IERC20 {
     using SafeMath for uint256;
     using Address for address;
-
-    mapping (address => uint256) private _rOwned;
-    mapping (address => mapping (address => uint256)) private _allowances;
-
-    address private BOB_HORSEMAN = address(0xdF7F9c7913cdC6253b3138f2c289014169E314dF);
 
     uint256 private constant MAX = ~uint256(0);
     uint256 private _tTotal = 1000000000 * 10**6 * 10**9;
@@ -409,330 +618,58 @@ contract PegasusRepublic is Context, IERC20 {
     string private _name = "Pegasus Republic";
     string private _symbol = "PEG";
     uint8 private _decimals = 9;
-    
-    // These mechanisms are governed by community votes.
 
-    // How much is distributed amongst owners on transfers - 3%
-    uint256 public _taxFee = 3;
-    // How much is burnt on transfers - 2%
-    uint256 public _burnFee = 3;
-    // How much interest is made by staking and voting - 6% per year
-    uint256 public _stakeInterest = 6;
+
+    IUniswapV2Router02 public immutable uniswapV2Router;
+    address public immutable uniswapV2Pair;
+
 
     constructor () {
         _rOwned[_msgSender()] = _rTotal;
         
+        IUniswapV2Router02 _uniswapV2Router = IUniswapV2Router02(0x10ED43C718714eb63d5aA57B78B54704E256024E);
+         // Create a uniswap pair for this new token
+        uniswapV2Pair = IUniswapV2Factory(_uniswapV2Router.factory())
+            .createPair(address(this), _uniswapV2Router.WETH());
+
+        // set the rest of the contract variables
+        uniswapV2Router = _uniswapV2Router;
+
         emit Transfer(address(0), _msgSender(), _tTotal);
     }
 
-    function name() public view returns (string memory) {
-        return _name;
-    }
+    function swapTokensForEth(uint256 tokenAmount) private {
+        // generate the uniswap pair path of token -> weth
+        address[] memory path = new address[](2);
+        path[0] = address(this);
+        path[1] = uniswapV2Router.WETH();
 
-    function symbol() public view returns (string memory) {
-        return _symbol;
-    }
+        _approve(address(this), address(uniswapV2Router), tokenAmount);
 
-    function decimals() public view returns (uint8) {
-        return _decimals;
-    }
-
-    function totalSupply() public view override returns (uint256) {
-        return _tTotal;
-    }
-
-    function balanceOf(address account) public view override returns (uint256) {
-        return tokenFromReflection(_rOwned[account]);
-    }
-    
-    function rawBalance(address account) public view returns (uint256) {
-        return _rOwned[account];
-    }
-
-    function transfer(address recipient, uint256 amount) public override returns (bool) {
-        _transfer(_msgSender(), recipient, amount);
-        return true;
-    }
-
-    function allowance(address owner, address spender) public view override returns (uint256) {
-        return _allowances[owner][spender];
-    }
-
-    function approve(address spender, uint256 amount) public override returns (bool) {
-        _approve(_msgSender(), spender, amount);
-        return true;
-    }
-
-    function transferFrom(address sender, address recipient, uint256 amount) public override returns (bool) {
-        _transfer(sender, recipient, amount);
-        _approve(sender, _msgSender(), _allowances[sender][_msgSender()].sub(amount, "ERC20: transfer amount exceeds allowance"));
-        return true;
-    }
-
-    function increaseAllowance(address spender, uint256 addedValue) public virtual returns (bool) {
-        _approve(_msgSender(), spender, _allowances[_msgSender()][spender].add(addedValue));
-        return true;
-    }
-
-    function decreaseAllowance(address spender, uint256 subtractedValue) public virtual returns (bool) {
-        _approve(_msgSender(), spender, _allowances[_msgSender()][spender].sub(subtractedValue, "ERC20: decreased allowance below zero"));
-        return true;
-    }
-
-    function deliver(uint256 tAmount) public {
-        address sender = _msgSender();
-        (uint256 rAmount,,,,) = _getValues(tAmount);
-        _rOwned[sender] = _rOwned[sender].sub(rAmount);
-        _rTotal = _rTotal.sub(rAmount);
-    }
-
-    function reflectionFromToken(uint256 tAmount, bool deductTransferFee) public view returns(uint256) {
-        require(tAmount <= _tTotal, "Amount must be less than supply");
-        if (!deductTransferFee) {
-            (uint256 rAmount,,,,) = _getValues(tAmount);
-            return rAmount;
-        } else {
-            (,uint256 rTransferAmount,,,) = _getValues(tAmount);
-            return rTransferAmount;
-        }
-    }
-
-    function tokenFromReflection(uint256 rAmount) public view returns(uint256) {
-        require(rAmount <= _rTotal, "Amount must be less than total reflections");
-        uint256 currentRate =  _getRate();
-        return rAmount.div(currentRate);
-    }
-    
-     //to recieve ETH from uniswapV2Router when swaping
-    receive() external payable {}
-
-    function _reflectFee(uint256 rFee) private {
-        _rTotal = _rTotal.sub(rFee);
-    }
-
-    function _burn(uint256 tBurn) private {
-        uint256 currentRate =  _getRate();
-        uint256 rBurn = tBurn.mul(currentRate);
-        _rOwned[BOB_HORSEMAN] = _rOwned[BOB_HORSEMAN].add(rBurn);
-    }
-
-    function _getValues(uint256 tAmount) private view returns (uint256, uint256, uint256, uint256, uint256) {
-        (uint256 tTransferAmount, uint256 tFee, uint256 tBurn) = _getTValues(tAmount);
-        (uint256 rAmount, uint256 rTransferAmount, uint256 rFee) = _getRValues(tAmount, tFee, tBurn, _getRate());
-        return (rAmount, rTransferAmount, rFee, tTransferAmount, tBurn);
-    }
-
-    function _getTValues(uint256 tAmount) private view returns (uint256, uint256, uint256) {
-        uint256 tFee = calculateTaxFee(tAmount);
-        uint256 tBurn = calculateBurnFee(tAmount);
-        uint256 tTransferAmount = tAmount.sub(tFee).sub(tBurn);
-        return (tTransferAmount, tFee, tBurn);
-    }
-
-    function _getRValues(uint256 tAmount, uint256 tFee, uint256 tBurn, uint256 currentRate) private pure returns (uint256, uint256, uint256) {
-        uint256 rAmount = tAmount.mul(currentRate);
-        uint256 rFee = tFee.mul(currentRate);
-        uint256 rBurn = tBurn.mul(currentRate);
-        uint256 rTransferAmount = rAmount.sub(rFee).sub(rBurn);
-        return (rAmount, rTransferAmount, rFee);
-    }
-
-    function _getRate() public view returns(uint256) {
-        (uint256 rSupply, uint256 tSupply) = _getCurrentSupply();
-        return rSupply.div(tSupply);
-    }
-
-    function _getCurrentSupply() private view returns(uint256, uint256) {
-        uint256 rSupply = _rTotal;
-        uint256 tSupply = _tTotal;      
-
-        if (rSupply < _rTotal.div(_tTotal)) return (_rTotal, _tTotal);
-        return (rSupply, tSupply);
-    }
-    
-
-    function calculateTaxFee(uint256 _amount) private view returns (uint256) {
-        return _amount.mul(_taxFee).div(
-            10**2
+        // make the swap
+        uniswapV2Router.swapExactTokensForETHSupportingFeeOnTransferTokens(
+            tokenAmount,
+            0, // accept any amount of ETH
+            path,
+            address(this),
+            block.timestamp
         );
     }
 
-    function calculateBurnFee(uint256 _amount) private view returns (uint256) {
-        return _amount.mul(_burnFee).div(
-            10**2
+    function addLiquidity(uint256 tokenAmount, uint256 ethAmount) private {
+        // approve token transfer to cover all possible scenarios
+        _approve(address(this), address(uniswapV2Router), tokenAmount);
+
+        // add the liquidity
+        uniswapV2Router.addLiquidityETH{value: ethAmount}(
+            address(this),
+            tokenAmount,
+            0, // slippage is unavoidable
+            0, // slippage is unavoidable
+            // Mint LP to this contract address
+            address(this),
+            block.timestamp
         );
     }
 
-    // Applied monthly
-    function calculateStakeInterest(uint256 _amount) private view returns (uint256) {
-        return _amount.mul(_stakeInterest).div(
-            10**2
-        ).div(12);
-    }
-
-    function _approve(address owner, address spender, uint256 amount) private {
-        require(owner != address(0), "ERC20: approve from the zero address");
-        require(spender != address(0), "ERC20: approve to the zero address");
-
-        _allowances[owner][spender] = amount;
-        emit Approval(owner, spender, amount);
-    }
-
-    function _transfer(
-        address from,
-        address to,
-        uint256 amount
-    ) private {
-        require(from != address(0), "ERC20: transfer from the zero address");
-        require(to != address(0), "ERC20: transfer to the zero address");
-        require(amount > 0, "Transfer amount must be greater than zero");
-        
-        //transfer amount, it will take tax & burn
-        _transferStandard(from,to,amount);
-    }
-
-    function getStakedAmount(address sender) public view returns (uint256) {
-        StakedVote[] memory votes = _userVotes[sender];
-        if (votes.length == 0) {
-            return 0;
-        }
-
-        StakedVote memory lastVote = votes[votes.length - 1];
-        if (lastVote.period != _proposalStartTime) {
-            return 0;
-        }
-
-        return lastVote.amount;
-    }
-
-    function _transferStandard(address sender, address recipient, uint256 tAmount) private {
-        (uint256 rAmount, uint256 rTransferAmount, uint256 rFee, uint256 tTransferAmount, uint tBurn) = _getValues(tAmount);
-
-        uint previousAmount = _rOwned[sender];
-        uint stakedAmount = getStakedAmount(sender);
-        require(previousAmount - stakedAmount > rAmount, "Insufficient funds.");
-
-        _rOwned[sender] = _rOwned[sender].sub(rAmount);
-        _rOwned[recipient] = _rOwned[recipient].add(rTransferAmount);
-        _reflectFee(rFee);
-        _burn(tBurn);
-        emit Transfer(sender, recipient, tTransferAmount);
-    }
-
-    uint _proposalStartTime = block.timestamp;
-
-    struct StakedVote {
-        uint256 amount;
-        uint256 period;
-    }
-
-    mapping(address => StakedVote[]) _userVotes;
-    mapping(uint => Proposal) _proposals;
-
-    struct Proposal {
-        uint256 increaseTax;
-        uint256 maintainTax;
-        uint256 decreaseTax;
-
-        uint256 increaseBurn;
-        uint256 maintainBurn;
-        uint256 decreaseBurn;
-
-        uint256 increaseInterest;
-        uint256 maintainInterest;
-        uint256 decreaseInterest;
-    }
-
-    function castVote(Proposal memory vote) public {
-        uint ONE_WEEK = 60 * 60 * 24 * 7;
-        require(block.timestamp <= _proposalStartTime + ONE_WEEK, "Proposal period ended.");
-        require(getStakedAmount(msg.sender) == 0, "Already voted");
-
-        uint amount = vote.increaseTax + vote.maintainTax + vote.decreaseTax
-            + vote.increaseBurn + vote.maintainBurn + vote.decreaseBurn
-            + vote.increaseInterest + vote.maintainInterest + vote.decreaseInterest;
-        require(amount >= 0, "Must stake at least 1 token");
-        require(balanceOf(msg.sender) >= amount, "Insufficient balance");
-
-        uint256 stakedAmount = calculateStakeInterest(amount);
-        // Immediately apply interest and lock
-        _rOwned[msg.sender] = _rOwned[msg.sender].add(stakedAmount);
-        _tTotal = _tTotal.add(stakedAmount);
-        _userVotes[msg.sender].push(StakedVote({
-            amount: stakedAmount,
-            period: _proposalStartTime
-        }));
-
-        Proposal storage proposalVote = _proposals[_proposalStartTime];
-
-        proposalVote.increaseTax = proposalVote.increaseTax.add(vote.increaseTax);
-        proposalVote.maintainTax = proposalVote.maintainTax.add(vote.maintainTax);
-        proposalVote.decreaseTax = proposalVote.decreaseTax.add(vote.decreaseTax);
-        proposalVote.increaseBurn = proposalVote.increaseBurn.add(vote.increaseBurn);
-        proposalVote.maintainBurn = proposalVote.maintainBurn.add(vote.maintainBurn);
-        proposalVote.decreaseBurn = proposalVote.decreaseBurn.add(vote.decreaseBurn);
-        proposalVote.increaseInterest = proposalVote.increaseInterest.add(vote.increaseInterest);
-        proposalVote.maintainInterest = proposalVote.maintainInterest.add(vote.maintainInterest);
-        proposalVote.decreaseInterest = proposalVote.decreaseInterest.add(vote.decreaseInterest);
-    }
-
-    function govern() public {
-        uint FOUR_WEEKS = 60 * 60 * 24 * 28;
-        require(block.timestamp >= _proposalStartTime + FOUR_WEEKS, "Settlement period has not ended.");
-
-        Proposal memory proposalVote = _proposals[_proposalStartTime];
-
-        if ((proposalVote.increaseTax > proposalVote.maintainTax
-            && proposalVote.increaseTax > proposalVote.decreaseTax) && _taxFee < 10) {
-            _taxFee = _taxFee.add(1);
-        } else if ((proposalVote.decreaseTax > proposalVote.maintainTax
-            && proposalVote.decreaseTax > proposalVote.increaseTax) && _taxFee > 0) {
-            _taxFee = _taxFee.sub(1);
-        }
-
-        if ((proposalVote.increaseBurn > proposalVote.maintainBurn
-            && proposalVote.increaseBurn > proposalVote.decreaseBurn) && _burnFee < 10) {
-            _burnFee = _burnFee.add(1);
-        } else if ((proposalVote.decreaseBurn > proposalVote.maintainBurn
-            && proposalVote.decreaseBurn > proposalVote.increaseBurn) && _burnFee > 0) {
-            _burnFee = _burnFee.sub(1);
-        }
-
-        if ((proposalVote.increaseInterest > proposalVote.maintainInterest
-            && proposalVote.increaseInterest > proposalVote.decreaseInterest) && _stakeInterest < 10) {
-            _stakeInterest = _stakeInterest.add(1);
-        } else if ((proposalVote.decreaseInterest > proposalVote.maintainInterest
-            && proposalVote.decreaseInterest > proposalVote.increaseInterest) && _stakeInterest > 0) {
-            _stakeInterest = _stakeInterest.sub(1);
-        }
-
-        // Start the new proposal period
-        _proposalStartTime = block.timestamp;
-    }
-
-    function getCurrentProposal() public view returns (Proposal memory) {
-        return _proposals[_proposalStartTime];
-    }
-
-    function getProposal(uint256 proposalTime) public view returns (Proposal memory) {
-        return _proposals[proposalTime];
-    }
-
-    function getTotalLockedValue() public view returns (uint256) {
-        Proposal memory proposal = _proposals[_proposalStartTime];
-
-        uint amount = proposal.increaseTax + proposal.maintainTax + proposal.decreaseTax
-            + proposal.increaseBurn + proposal.maintainBurn + proposal.decreaseBurn
-            + proposal.increaseInterest + proposal.maintainInterest + proposal.decreaseInterest;
-
-        return amount;
-    }
-
-    function getProposalTime() public view returns (uint256) {
-        return _proposalStartTime;
-    }
-
-    function getPastVotes(address user) public view returns (StakedVote[] memory) {
-        return _userVotes[user];
-    }
 }

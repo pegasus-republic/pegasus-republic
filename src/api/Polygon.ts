@@ -2,7 +2,7 @@ import Web3 from "web3/dist/web3.min.js";
 import abi from "./ABI.json";
 
 const BOB_HORSEMAN = "0xdF7F9c7913cdC6253b3138f2c289014169E314dF";
-const ADDRESS = "0xA86E46a569c3F16efA17458221AE83a65324425B";
+const ADDRESS = "0x06872971938462D0b206D01fe98eCc3E73798b89";
 
 const initialiseWeb3 = async () => {
   if ((window as any).ethereum) {
@@ -60,6 +60,20 @@ export async function getTLV() {
   return contract.methods.getTotalLockedValue().call();
 }
 
+export async function balance() {
+  const web3 = await getWeb3();
+
+  if (!web3) {
+    return 0;
+  }
+
+  const accounts = await web3.eth.getAccounts();
+  const account = accounts[0];
+  const contract = new web3.eth.Contract(abi as any, ADDRESS);
+
+  return contract.methods.balanceOf(account).call();
+}
+
 export async function getCurrentProposal() {
   const web3 = await getWeb3();
   if (!web3) {
@@ -94,19 +108,36 @@ export async function getStakedAmount() {
   const account = accounts[0];
   const contract = new web3.eth.Contract(abi as any, ADDRESS);
 
-  return contract.methods.getStakedAmount().call();
+  const amount = await contract.methods.getStakedAmount(account).call();
+  console.log({ amount });
+  return Number(amount);
 }
 
 export type Option = {
   title: string;
   percent: string;
   voteIndex: number;
+  type: "decrease" | "maintain" | "increase";
+  votedPercentage?: number;
 };
 
 interface VoteOptions {
   amount: number;
-  options: Option[];
+  options: Votes;
 }
+
+export type Votes = {
+  increaseTax: number | string;
+  maintainTax: number | string;
+  decreaseTax: number | string;
+  increaseBurn: number | string;
+  maintainBurn: number | string;
+  decreaseBurn: number | string;
+  increaseInterest: number | string;
+  maintainInterest: number | string;
+  decreaseInterest: number | string;
+};
+
 export async function vote({ amount, options }: VoteOptions) {
   const web3 = await getWeb3();
   if (!web3) {
@@ -117,19 +148,14 @@ export async function vote({ amount, options }: VoteOptions) {
   const account = accounts[0];
   const contract = new web3.eth.Contract(abi as any, ADDRESS);
 
-  let votes = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
-  //const wei = Number(web3.utils.toWei(String(amount), "ether"));
-  const amountForEachOption = amount / options.length;
+  const amountForEachOption = Math.floor(amount / 9);
 
-  options.forEach((option) => {
-    votes[option.voteIndex] = amountForEachOption;
-  });
-  console.log({ votes });
   console.log({ amountForEachOption });
+  console.log({ options });
 
   return new Promise((resolve, reject) => {
     contract.methods
-      .castVote(votes)
+      .castVote(options)
       .send({ from: account })
       .on("error", function (error: Error) {
         console.log({ error });

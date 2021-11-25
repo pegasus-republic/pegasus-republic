@@ -18,6 +18,7 @@
     "@tailwindcss/aspect-ratio": "^0.3.0",
     "@xstate/react": "^1.6.1",
     "autoprefixer": "^10.3.7",
+    "bignumber.js": "^9.0.1",
     "react": "16.13.1",
     "react-dom": "16.13.1",
     "vite-tsconfig-paths": "^3.3.14",

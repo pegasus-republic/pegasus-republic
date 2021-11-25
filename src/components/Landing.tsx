@@ -156,7 +156,7 @@ export default function Example() {
                     <h1 className="mt-4 text-4xl tracking-tight font-extrabold text-white sm:mt-5 sm:text-6xl lg:mt-6 xl:text-6xl">
                       <span className="block">Pegasus Republic</span>
                       <span className="pb-3 block bg-clip-text text-transparent bg-gradient-to-r from-teal-200 to-cyan-400 sm:pb-5">
-                        A better SafeMoon
+                        You decide.
                       </span>
                     </h1>
                     <p className="text-base text-gray-300 sm:text-xl lg:text-lg xl:text-xl">
@@ -165,7 +165,7 @@ export default function Example() {
                     </p>
                     <h1 className="mt-4 text-2xl tracking-tight font-extrabold text-white sm:mt-2 sm:text-2xl lg:mt-3 xl:text-2xl">
                       <span className="pb-3 block bg-clip-text text-transparent bg-gradient-to-r from-teal-200 to-cyan-400 sm:pb-5">
-                        0xA86E46a569c3F16efA17458221AE83a65324425B
+                        0x06872971938462D0b206D01fe98eCc3E73798b89
                       </span>
                     </h1>
                     <div className="mt-10 sm:mt-12">
@@ -238,7 +238,7 @@ export default function Example() {
                           Burn
                         </dt>
                         <dd className="order-1 text-5xl font-extrabold text-cyan-600">
-                          2%
+                          3%
                         </dd>
                       </div>
                       <div className="flex flex-col border-t border-b border-gray-100 p-6 text-center sm:border-0 sm:border-l sm:border-r">

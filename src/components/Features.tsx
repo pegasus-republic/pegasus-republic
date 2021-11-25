@@ -185,11 +185,16 @@ export default function Features() {
               <div className="flow-root self-center mt-8 lg:mt-0">
                 <div className="-mt-4 -ml-8 flex flex-wrap justify-between lg:-ml-4">
                   <div className="mt-4 ml-8 flex flex-grow flex-shrink-0 justify-center lg:flex-grow-0 lg:ml-4">
-                    <img
-                      className="h-12"
-                      src="https://camo.githubusercontent.com/6214be9321b2b4a1ad8483414fdbe193f2fe4aa4d41de52efc023eb5ef0206cd/68747470733a2f2f6273637363616e2e636f6d2f696d616765732f6c6f676f2d6273637363616e2e7376673f763d302e302e32"
-                      alt="Workcation"
-                    />
+                    <a
+                      href="https://bscscan.com/token/0x06872971938462d0b206d01fe98ecc3e73798b89"
+                      target="_blank"
+                    >
+                      <img
+                        className="h-12"
+                        src="https://camo.githubusercontent.com/6214be9321b2b4a1ad8483414fdbe193f2fe4aa4d41de52efc023eb5ef0206cd/68747470733a2f2f6273637363616e2e636f6d2f696d616765732f6c6f676f2d6273637363616e2e7376673f763d302e302e32"
+                        alt="Workcation"
+                      />
+                    </a>
                   </div>
                   <div className="mt-4 ml-8 flex flex-grow flex-shrink-0 justify-center lg:flex-grow-0 lg:ml-4">
                     <img
