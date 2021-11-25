@@ -45,11 +45,7 @@ const features = [
       "3% is reflected to holders automatically for a passive income.",
     icon: CloudUploadIcon,
   },
-  {
-    name: "Liqudity Pool Acqusition",
-    description: "5% is automatically added to an ever growing pool",
-    icon: LockClosedIcon,
-  },
+
   {
     name: "Burn",
     description:
@@ -71,6 +67,12 @@ const features = [
     name: "Staking",
     description:
       "Rewards for active members of the community who vote on proposals.",
+    icon: ServerIcon,
+  },
+  {
+    name: "Meme Central",
+    description:
+      "Relish in the world of meme culture and the benevolent Bob Horseman.",
     icon: ServerIcon,
   },
 ];

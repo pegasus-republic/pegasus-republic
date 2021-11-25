@@ -464,7 +464,7 @@ export default function Proposal() {
                   aria-hidden="true"
                 />
                 <span className="text-sm text-gray-500">
-                  Not connected to Polygon Network
+                  Not connected to Binance Smart Chain Network
                 </span>
               </div>
             )}
