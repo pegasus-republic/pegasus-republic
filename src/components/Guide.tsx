@@ -53,8 +53,8 @@ export const Guide: React.FC = () => {
           </h2>
           <p className="mt-4 max-w-3xl mx-auto text-center text-xl text-gray-500">
             In order to join the community and become involved in the voting
-            process you must have the $PEG token and also are web wallet
-            connected to the Binance Smart chain.
+            process you must have the $PEG token and also a web wallet connected
+            to the Binance Smart chain.
           </p>
         </div>
 
