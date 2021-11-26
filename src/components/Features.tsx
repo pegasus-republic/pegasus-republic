@@ -136,7 +136,7 @@ export default function Features() {
                     Neeeeigh!
                   </p>
                 </div>
-                <footer className="mt-6">
+                <footer className="mt-6 mb-6">
                   <p className="text-base font-medium text-white">
                     Bob Horseman
                   </p>
