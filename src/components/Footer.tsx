@@ -11,8 +11,8 @@ const navigation = [
     ),
   },
   {
-    name: "GitHub",
-    href: "#",
+    name: "Telegram",
+    href: "https://t.me/+L2bZSku7KAs4NTQ1",
     icon: (props: any) => (
       <img
         {...props}
@@ -64,7 +64,11 @@ export default function Example() {
         <div className="max-w-7xl mx-auto py-12 px-4 sm:px-6 md:flex md:items-center md:justify-between lg:px-8">
           <div className="flex justify-center space-x-6 md:order-2">
             {navigation.map((item) => (
-              <a key={item.name} className="text-gray-400 hover:text-gray-500">
+              <a
+                key={item.name}
+                href={item.href}
+                className="text-gray-400 hover:text-gray-500"
+              >
                 <span className="sr-only">{item.name}</span>
                 <item.icon className="h-6 w-6" aria-hidden="true" />
               </a>

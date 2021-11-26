@@ -258,7 +258,7 @@ export const Guide: React.FC = () => {
             can take part in the voting process{" "}
             <a href="#vote" className="underline">
               here.
-            </a>
+            </a>{" "}
             When you vote your tokens are staked until the end of the voting
             period. You will recieve 0.5% in interest but will be unable to
             withdraw until the end of the voting period. At the end of the 4
