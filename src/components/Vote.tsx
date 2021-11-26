@@ -337,17 +337,23 @@ export default function Proposal() {
             your on the tokens you stake in the voting process.
           </p>
 
-          <p className="max-w-prose mx-auto text-base text-gray-500 mb-4 mt-2">
+          <p className="max-w-prose mx-auto text-base text-gray-500 mt-2">
             Every 4 weeks a new voting proposal is created. There is a
             settlement period of 3 weeks before the tokenomics are automatically
             updated.
           </p>
+          <a
+            href="#guide"
+            className="max-w-prose mx-auto text-base text-cyan-500 mb-8 underline"
+          >
+            How do I participate?
+          </a>
           {!hasWeb3 && (
             <>
               <button
                 type="button"
                 onClick={connect}
-                className="block flex items-center justify-center mt-2 w-full py-3 px-4 rounded-md shadow bg-gradient-to-r disabled:opacity-50 from-teal-500 to-cyan-600 text-white font-medium hover:from-teal-600 hover:to-cyan-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-cyan-400 focus:ring-offset-gray-900"
+                className="block flex items-center justify-center mt-4 w-full py-3 px-4 rounded-md shadow bg-gradient-to-r disabled:opacity-50 from-teal-500 to-cyan-600 text-white font-medium hover:from-teal-600 hover:to-cyan-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-cyan-400 focus:ring-offset-gray-900"
               >
                 Connect to Metamask to Vote
               </button>

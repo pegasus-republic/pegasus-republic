@@ -2,7 +2,10 @@ import React from "react";
 
 export const Roadmap: React.FC = () => {
   return (
-    <div className="bg-white" id="roadmap">
+    <div
+      className="bg-white relative h-full text-lg max-w-5xl mx-auto"
+      id="roadmap"
+    >
       <div
         className="
               max-w-7xl
@@ -30,10 +33,6 @@ export const Roadmap: React.FC = () => {
             Our goal is to become a token where the community has the power to
             decide a future of their own. No more shady developers or
             governments deciding the inflation rate.
-          </p>
-          <p className="mt-4 text-lg text-gray-500">
-            No presale or over-promising bullshit. The team has a track record
-            of delivering features that matter.
           </p>
         </div>
         <div className="mt-12 lg:mt-0 lg:col-span-2">
