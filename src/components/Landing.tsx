@@ -184,7 +184,7 @@ export default function Example() {
                           </div>
                         </div>
                         <p className="mt-3 text-sm text-gray-300 sm:mt-4">
-                          Set slippage to 10%.{" "}
+                          Set slippage to 6%.{" "}
                           <a href="#" className="font-medium text-white">
                             Read more
                           </a>

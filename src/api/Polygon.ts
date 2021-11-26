@@ -22,7 +22,7 @@ const initialiseWeb3 = async () => {
 };
 
 let web3: Web3 | null;
-async function getWeb3() {
+export async function getWeb3() {
   if (!web3) {
     web3 = await initialiseWeb3();
   }
@@ -148,11 +148,7 @@ export async function vote({ amount, options }: VoteOptions) {
   const account = accounts[0];
   const contract = new web3.eth.Contract(abi as any, ADDRESS);
 
-  const amountForEachOption = Math.floor(amount / 9);
-
-  console.log({ amountForEachOption });
   console.log({ options });
-
   return new Promise((resolve, reject) => {
     contract.methods
       .castVote(options)

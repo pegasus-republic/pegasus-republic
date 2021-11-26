@@ -16,6 +16,7 @@ import {
   getStakedAmount,
   balance,
   Votes,
+  getWeb3,
 } from "../api/Polygon";
 
 const reflectionOptions: Option[] = [
@@ -175,10 +176,12 @@ export default function Proposal() {
   const [interestVote, setInterestVote] = useState(interestOptions[1]);
   const [isVoting, setIsVoting] = useState(false);
   const [amount, setAmount] = useState(100000000);
+  const [myBalance, setBalance] = useState(0);
 
   const [hasWeb3, setHasWeb3] = useState(false);
   const [hasVoted, setHasVoted] = useState(false);
   const [stakedAmount, setStakedAmount] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
   // Array of 9 votes
   const [currentProposal, setCurrentProposal] = useState<Votes | null>(null);
@@ -200,10 +203,10 @@ export default function Proposal() {
     const myBalance = await balance();
     setAmount(myBalance);
     console.log({ myBalance });
-
+    setBalance(myBalance);
     const stakedAmount = await getStakedAmount();
     if (stakedAmount) {
-      setHasVoted(!!stakedAmount);
+      //setHasVoted(!!stakedAmount);
       setAmount(stakedAmount);
     }
   };
@@ -211,35 +214,46 @@ export default function Proposal() {
   const submit = async () => {
     setIsVoting(true);
 
-    const amountForEachOption = Math.floor(amount / 3).toLocaleString(
-      "fullwide",
-      {
-        useGrouping: false,
-      }
-    );
+    // Can't submit full amount or contract complains
+    const validAmount = amount;
 
-    await vote({
-      amount,
-      options: {
-        increaseTax:
-          reflectionVote.type === "increase" ? amountForEachOption : 0,
-        maintainTax:
-          reflectionVote.type === "maintain" ? amountForEachOption : 0,
-        decreaseTax:
-          reflectionVote.type === "decrease" ? amountForEachOption : 0,
-        increaseBurn: burnVote.type === "increase" ? amountForEachOption : 0,
-        maintainBurn: burnVote.type === "maintain" ? amountForEachOption : 0,
-        decreaseBurn: burnVote.type === "decrease" ? amountForEachOption : 0,
-        increaseInterest:
-          interestVote.type === "increase" ? amountForEachOption : 0,
-        maintainInterest:
-          interestVote.type === "maintain" ? amountForEachOption : 0,
-        decreaseInterest:
-          interestVote.type === "decrease" ? amountForEachOption : 0,
-      },
+    // Don't send 100% since JS precision might go off and go over a users balance
+    const amountForEachOption = Math.floor(
+      (validAmount / 3) * 0.99
+    ).toLocaleString("fullwide", {
+      useGrouping: false,
     });
-    setHasVoted(true);
-    setIsVoting(false);
+
+    try {
+      await vote({
+        amount,
+        options: {
+          increaseTax:
+            reflectionVote.type === "increase" ? amountForEachOption : 0,
+          maintainTax:
+            reflectionVote.type === "maintain" ? amountForEachOption : 0,
+          decreaseTax:
+            reflectionVote.type === "decrease" ? amountForEachOption : 0,
+          increaseBurn: burnVote.type === "increase" ? amountForEachOption : 0,
+          maintainBurn: burnVote.type === "maintain" ? amountForEachOption : 0,
+          decreaseBurn: burnVote.type === "decrease" ? amountForEachOption : 0,
+          increaseInterest:
+            interestVote.type === "increase" ? amountForEachOption : 0,
+          maintainInterest:
+            interestVote.type === "maintain" ? amountForEachOption : 0,
+          decreaseInterest:
+            interestVote.type === "decrease" ? amountForEachOption : 0,
+        },
+      });
+      setHasVoted(true);
+    } catch (e: any) {
+      if (e.message.includes("User denied transaction signature")) {
+        return;
+      }
+      setError("Something went wrong");
+    } finally {
+      setIsVoting(false);
+    }
   };
 
   const totalPerCategory = totalValueLocked / 3;
@@ -384,10 +398,17 @@ export default function Proposal() {
                       className="text-gray-500 sm:text-sm"
                       id="price-currency"
                     >
-                      AP
+                      PEG
                     </span>
                   </div>
                 </div>
+
+                {hasWeb3 && Number(amount) > myBalance && (
+                  <span className="text-red-500 text-sm">
+                    You don't have enough funds to stake this amount
+                  </span>
+                )}
+                <span></span>
 
                 <div className="rounded-md bg-yellow-50 p-4  mt-2">
                   <div className="flex">
@@ -406,8 +427,13 @@ export default function Proposal() {
                           Your tokens will be staked until the end of the
                           proposal period and cannot be withdrawn until then.
                           You will earn{" "}
-                          <b className="underline">${amount * interest}</b> for
-                          your staked amount. You can only vote once per
+                          <b className="underline">
+                            $
+                            {(amount * interest).toLocaleString("fullwide", {
+                              useGrouping: false,
+                            })}
+                          </b>{" "}
+                          for your staked amount. You can only vote once per
                           proposal period.
                         </p>
                       </div>
