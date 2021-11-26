@@ -1,5 +1,5 @@
 import React from "react";
-
+import { InformationCircleIcon } from "@heroicons/react/outline";
 const navigation = [
   {
     name: "Twitter",
@@ -24,22 +24,59 @@ const navigation = [
 
 export default function Example() {
   return (
-    <footer className="bg-white">
-      <div className="max-w-7xl mx-auto py-12 px-4 sm:px-6 md:flex md:items-center md:justify-between lg:px-8">
-        <div className="flex justify-center space-x-6 md:order-2">
-          {navigation.map((item) => (
-            <a key={item.name} className="text-gray-400 hover:text-gray-500">
-              <span className="sr-only">{item.name}</span>
-              <item.icon className="h-6 w-6" aria-hidden="true" />
-            </a>
-          ))}
-        </div>
-        <div className="mt-8 md:mt-0 md:order-1">
-          <p className="text-center text-base text-gray-400">
-            &copy; 2021 Pegasus Republic. All rights reserved.
-          </p>
+    <>
+      <div className="mx-auto mt-8 max-w-md px-4 text-center sm:max-w-3xl sm:px-6 lg:px-8 lg:max-w-7xl">
+        <div className="rounded-md bg-cyan-50 p-4">
+          <div className="flex">
+            <div className="flex-shrink-0">
+              <InformationCircleIcon
+                className="h-5 w-5 text-cyan-400"
+                aria-hidden="true"
+              />
+            </div>
+            <div className="ml-3">
+              <h3 className="text-sm font-medium text-cyan-800">
+                Legal Disclaimer
+              </h3>
+              <div className="mt-2 text-sm text-cyan-700">
+                <p>
+                  The information provided on this website does not constitute
+                  investment advice, financial advice, trading advice, or any
+                  other sort of advice and you should not treat any of the
+                  website’s content as such. The Pegasus Republic team does not
+                  recommend that any cryptocurrency should be bought, sold, or
+                  held by you. Do conduct your own due diligence and consult
+                  your financial advisor before making any investment decisions.
+                  By purchasing Pegasus Republic ($PEG), you agree that you are
+                  not purchasing a security or investment and you agree to hold
+                  the team harmless and not liable for any losses or taxes you
+                  may incur. You also agree that the team is presenting the
+                  token “as is” and is not required to provide any support or
+                  services. Always make sure that you are in compliance with
+                  your local laws and regulations before you make any purchase.
+                </p>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
-    </footer>
+      <footer className="bg-white">
+        <div className="max-w-7xl mx-auto py-12 px-4 sm:px-6 md:flex md:items-center md:justify-between lg:px-8">
+          <div className="flex justify-center space-x-6 md:order-2">
+            {navigation.map((item) => (
+              <a key={item.name} className="text-gray-400 hover:text-gray-500">
+                <span className="sr-only">{item.name}</span>
+                <item.icon className="h-6 w-6" aria-hidden="true" />
+              </a>
+            ))}
+          </div>
+          <div className="mt-8 md:mt-0 md:order-1">
+            <p className="text-center text-base text-gray-400">
+              &copy; 2021 Pegasus Republic. All rights reserved.
+            </p>
+          </div>
+        </div>
+      </footer>
+    </>
   );
 }

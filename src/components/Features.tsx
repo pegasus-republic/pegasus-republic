@@ -1,33 +1,7 @@
-/*
-  This example requires Tailwind CSS v2.0+ 
-  
-  This example requires some changes to your config:
-  
-  ```
-  // tailwind.config.js
-  const colors = require('tailwindcss/colors')
-  
-  module.exports = {
-    // ...
-    theme: {
-      extend: {
-        colors: {
-          teal: colors.teal,
-          cyan: colors.cyan,
-        },
-      },
-    },
-    plugins: [
-      // ...
-      require('@tailwindcss/forms'),
-      require('@tailwindcss/aspect-ratio'),
-    ],
-  }
-  ```
-*/
 import React, { Fragment } from "react";
 import { Popover, Transition } from "@headlessui/react";
 import {
+  CheckIcon,
   CloudUploadIcon,
   CogIcon,
   LockClosedIcon,
@@ -169,9 +143,13 @@ export default function Features() {
                   <p className="text-base font-medium text-cyan-100">
                     CEO at Pegasus Republic
                   </p>
-                  <p className="text-base font-medium text-white">
+                  <a
+                    href="https://bscscan.com/address/0xdF7F9c7913cdC6253b3138f2c289014169E314dF#code"
+                    className="text-base font-medium text-white underline"
+                    target="_blank"
+                  >
                     0xdF7F9c7913cdC6253b3138f2c289014169E314dF - Burn Address
-                  </p>
+                  </a>
                 </footer>
               </blockquote>
             </div>
@@ -196,6 +174,12 @@ export default function Features() {
                         src="https://camo.githubusercontent.com/6214be9321b2b4a1ad8483414fdbe193f2fe4aa4d41de52efc023eb5ef0206cd/68747470733a2f2f6273637363616e2e636f6d2f696d616765732f6c6f676f2d6273637363616e2e7376673f763d302e302e32"
                         alt="Workcation"
                       />
+                      <div className="flex items-center">
+                        <CheckIcon className="h-6 w-6 text-green-500" />
+                        <span className="text-gray-500 text-sm">
+                          Contract Verified
+                        </span>
+                      </div>
                     </a>
                   </div>
                   <div className="mt-4 ml-8 flex flex-grow flex-shrink-0 justify-center lg:flex-grow-0 lg:ml-4">

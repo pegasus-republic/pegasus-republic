@@ -3,6 +3,7 @@ import React from "react";
 import Landing from "./components/Landing";
 import Features from "./components/Features";
 import Vote from "./components/Vote";
+import { Roadmap } from "./components/Roadmap";
 import Footer from "./components/Footer";
 
 // app.js
@@ -14,6 +15,7 @@ const App: React.FC = () => {
       <Landing />
       <Vote />
       <Features />
+      <Roadmap />
       <Footer />
     </>
   );

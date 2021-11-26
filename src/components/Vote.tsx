@@ -333,10 +333,14 @@ export default function Proposal() {
             Closes on December 1st
           </p>
           <p className="mt-5 max-w-prose mx-auto text-xl text-gray-500">
-            Every 4 weeks holders have the chance to vote on a new proposal to
-            change the functioning tokenomics. Earn{" "}
-            <b className="text-gray-900 underline">0.5%</b> interest on your
-            staked tokens by taking part in the governing process.
+            Earn <b className="text-cyan-500 underline">0.5%</b> interest on
+            your on the tokens you stake in the voting process.
+          </p>
+
+          <p className="max-w-prose mx-auto text-base text-gray-500 mb-4 mt-2">
+            Every 4 weeks a new voting proposal is created. There is a
+            settlement period of 3 weeks before the tokenomics are automatically
+            updated.
           </p>
           {!hasWeb3 && (
             <>
