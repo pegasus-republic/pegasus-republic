@@ -206,7 +206,7 @@ export default function Proposal() {
     setBalance(myBalance);
     const stakedAmount = await getStakedAmount();
     if (stakedAmount) {
-      //setHasVoted(!!stakedAmount);
+      setHasVoted(!!stakedAmount);
       setAmount(stakedAmount);
     }
   };
