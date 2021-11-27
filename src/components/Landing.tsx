@@ -144,14 +144,21 @@ export default function Example() {
                       >
                         <div className="sm:flex">
                           <div className="mt-3 sm:mt-0">
-                            <a
+                            <button
                               type="submit"
-                              href="https://pancakeswap.finance/swap?outputCurrency=0x06872971938462D0b206D01fe98eCc3E73798b89"
-                              target="_blank"
+                              onClick={() => {
+                                console.log("Move");
+                                window
+                                  .open(
+                                    "https://pancakeswap.finance/swap?outputCurrency=0x06872971938462D0b206D01fe98eCc3E73798b89",
+                                    "_blank"
+                                  )
+                                  ?.focus();
+                              }}
                               className="block w-full py-3 px-4 rounded-md shadow bg-gradient-to-r from-teal-500 to-cyan-600 text-white font-medium hover:from-teal-600 hover:to-cyan-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-cyan-400 focus:ring-offset-gray-900"
                             >
                               Buy Now
-                            </a>
+                            </button>
                           </div>
                         </div>
                         <p className="mt-3 text-sm text-gray-300 sm:mt-4">
