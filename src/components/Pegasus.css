@@ -1,0 +1,10 @@
+@media {
+    .pegasus {
+        opacity: 0.4;
+    transform: scaleX(-1);
+    position: absolute;
+    right: 127px;
+    left: -33%;
+    top: 63px;
+    }
+}
