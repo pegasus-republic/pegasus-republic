@@ -71,7 +71,9 @@ export const Guide: React.FC = () => {
 
             <p className="mt-3 text-lg text-gray-500">
               On pancake swap use the following address to swap $PEG:
-              0x06872971938462D0b206D01fe98eCc3E73798b89
+              <span className="break-words block">
+                0x06872971938462D0b206D01fe98eCc3E73798b89
+              </span>
             </p>
           </div>
 
@@ -199,7 +201,9 @@ export const Guide: React.FC = () => {
                   <dd className="mt-2 ml-16 text-base text-gray-500">
                     Open Metamask and under your Assets click 'Import token'.
                     Copy and paste the $PEG address:
-                    0x06872971938462D0b206D01fe98eCc3E73798b89
+                    <span className="break-words block">
+                      0x06872971938462D0b206D01fe98eCc3E73798b89
+                    </span>
                   </dd>
                 </div>
               </dl>

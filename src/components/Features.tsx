@@ -145,7 +145,7 @@ export default function Features() {
                   </p>
                   <a
                     href="https://bscscan.com/address/0xdF7F9c7913cdC6253b3138f2c289014169E314dF#code"
-                    className="text-base font-medium text-white underline"
+                    className="text-base font-medium text-white underline break-words"
                     target="_blank"
                   >
                     0xdF7F9c7913cdC6253b3138f2c289014169E314dF - Burn Address

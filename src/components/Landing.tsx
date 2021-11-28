@@ -133,11 +133,11 @@ export default function Example() {
                       control the inflation, tax, interest and burn rates.
                     </p>
                     <h1 className="mt-4 text-2xl tracking-tight font-extrabold text-white sm:mt-2 sm:text-2xl lg:mt-3 xl:text-2xl">
-                      <span className="pb-3 block bg-clip-text text-transparent bg-gradient-to-r from-teal-200 to-cyan-400 sm:pb-5">
+                      <span className="pb-3 block bg-clip-text text-transparent bg-gradient-to-r from-teal-200 to-cyan-400 sm:pb-5 break-words">
                         0x06872971938462D0b206D01fe98eCc3E73798b89
                       </span>
                     </h1>
-                    <div className="mt-10 sm:mt-12">
+                    <div className="mt-10 sm:mt-12  select-none">
                       <form
                         action="#"
                         className="sm:max-w-xl sm:mx-auto lg:mx-0"
@@ -172,7 +172,7 @@ export default function Example() {
                     </div>
                   </div>
                 </div>
-                <div className="mt-12 -mb-16 sm:-mb-48 lg:m-0 lg:relative">
+                <div className="mt-12 -mb-16 sm:-mb-48 lg:m-0 lg:relative  select-none">
                   {/* Illustration taken from Lucid Illustrations: https://lucid.pixsellz.io/ */}
                   <img
                     className="w-full lg:absolute lg:h-full lg:w-auto lg:max-w-none lg:-left-1/2 lg:top-14 scale opacity-30"
