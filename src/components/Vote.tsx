@@ -415,12 +415,22 @@ export default function Proposal() {
               </>
             )}
             {hasVoted ? (
-              <div className="block flex items-center justify-center mt-4">
-                <CheckCircleIcon className="h-5 w-5 text-green-500" />
-                <span className="text-xl text-green-500">
-                  Vote successfully submitted. Your bonus will appear in your
-                  wallet
-                </span>
+              <div className="rounded-md bg-green-50 p-4  mt-4">
+                <div className="flex">
+                  <div className="flex-shrink-0 flex">
+                    <CheckCircleIcon
+                      className="h-5 w-5 text-green-400"
+                      aria-hidden="true"
+                    />
+
+                    <div className="text-sm text-green-700 ml-4">
+                      <p>
+                        Vote successfully submitted. Your bonus will appear in
+                        your wallet
+                      </p>
+                    </div>
+                  </div>
+                </div>
               </div>
             ) : (
               <>
