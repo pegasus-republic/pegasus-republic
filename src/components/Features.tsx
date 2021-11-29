@@ -1,6 +1,7 @@
 import React, { Fragment } from "react";
 import { Popover, Transition } from "@headlessui/react";
 import {
+  CalendarIcon,
   CheckIcon,
   CloudUploadIcon,
   CogIcon,
@@ -132,7 +133,7 @@ export default function Features() {
                   <p className="mt-6 text-2xl font-medium text-white">
                     When I was a foal I stored my money in a bank and had no
                     idea who was making decisions around it. Since joining
-                    Pegasus Republic I now have a say where my money goes and
+                    Pegasus Republic I have earned a say where my money goes and
                     what factors influence it.
                   </p>
                 </div>
@@ -182,12 +183,18 @@ export default function Features() {
                       </div>
                     </a>
                   </div>
-                  <div className="mt-4 ml-8 flex flex-grow flex-shrink-0 justify-center lg:flex-grow-0 lg:ml-4">
+                  <div className="mt-4 ml-8 flex items-center flex-col flex-grow flex-shrink-0 justify-center lg:flex-grow-0 lg:ml-4">
                     <img
                       className="h-12"
                       src="https://static.coingecko.com/s/coingecko-branding-guide-4f5245361f7a47478fa54c2c57808a9e05d31ac7ca498ab189a3827d6000e22b.png"
                       alt="Tuple"
                     />
+                    <div className="flex items-center">
+                      <CalendarIcon className="h-6 w-6 text-gray-400 mr-2" />
+                      <span className="text-gray-400 text-sm">
+                        Coming soon...
+                      </span>
+                    </div>
                   </div>
                   <div className="mt-8 ml-8 flex flex-grow flex-shrink-0 justify-center lg:flex-grow-0 lg:ml-4">
                     <a

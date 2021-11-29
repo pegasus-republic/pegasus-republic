@@ -389,7 +389,7 @@ export default function Proposal() {
                 )}
                 <span></span>
 
-                <div className="rounded-md bg-green-50 p-4  mt-2">
+                <div className="rounded-md bg-green-50 p-4  mt-2 overflow-y-hidden">
                   <div className="flex">
                     <div className="flex-shrink-0 flex">
                       <CheckCircleIcon
