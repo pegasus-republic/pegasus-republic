@@ -187,7 +187,7 @@ export default function Proposal() {
   const [currentProposal, setCurrentProposal] = useState<Votes | null>(null);
   const [totalValueLocked, setTotalValueLocked] = useState(0);
 
-  const interest = 1.05;
+  const interest = 0.05;
 
   const connect = async () => {
     const web3 = await connectWeb3();
@@ -333,8 +333,8 @@ export default function Proposal() {
             Closes on December 1st
           </p>
           <p className="mt-5 max-w-prose mx-auto text-xl text-gray-500">
-            Earn <b className="text-cyan-500 underline">0.5%</b> interest on
-            your on the tokens you stake in the voting process.
+            Earn an instant <b className="text-cyan-500 underline">0.5%</b>{" "}
+            bonus interest on your balance of tokens.
           </p>
 
           <p className="max-w-prose mx-auto text-base text-gray-500 mt-2">
@@ -359,13 +359,7 @@ export default function Proposal() {
               </button>
             </>
           )}
-          {hasWeb3 && (
-            <h1 className="mt-4 text-2xl tracking-tight font-extrabold text-white sm:mt-2 sm:text-2xl lg:mt-3 xl:text-2xl">
-              <span className="block bg-clip-text text-transparent bg-gradient-to-r text-cyan-600">
-                TLV: {totalValueLocked || "-"}
-              </span>
-            </h1>
-          )}
+
           <Vote
             options={updatedReflectionOptions}
             selected={reflectionVote}
@@ -388,63 +382,31 @@ export default function Proposal() {
           <div className="mt-4">
             {!hasVoted && (
               <>
-                <div className="mt-1 relative rounded-md shadow-sm">
-                  <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                    <span className="text-gray-500 sm:text-sm">$</span>
-                  </div>
-                  <input
-                    type="number"
-                    name="price"
-                    id="price"
-                    className="focus:ring-cyan-500 text-center focus:border-cyan-500 block w-full pl-7 pr-12 sm:text-2xl border-gray-300 rounded-md disabled:opacity-30"
-                    placeholder="0.00"
-                    aria-describedby="price-currency"
-                    value={amount}
-                    onChange={(e) => setAmount(Number(e.target.value))}
-                    disabled={!hasWeb3 || !!stakedAmount || isVoting}
-                  />
-                  <div className="absolute inset-y-0 right-0 pr-3 flex items-center pointer-events-none">
-                    <span
-                      className="text-gray-500 sm:text-sm"
-                      id="price-currency"
-                    >
-                      PEG
-                    </span>
-                  </div>
-                </div>
-
-                {hasWeb3 && Number(amount) > myBalance && (
+                {hasWeb3 && myBalance === 0 && (
                   <span className="text-red-500 text-sm">
-                    You don't have enough funds to stake this amount
+                    You don't have any $PEG
                   </span>
                 )}
                 <span></span>
 
-                <div className="rounded-md bg-yellow-50 p-4  mt-2">
+                <div className="rounded-md bg-green-50 p-4  mt-2">
                   <div className="flex">
-                    <div className="flex-shrink-0">
-                      <ExclamationCircleIcon
-                        className="h-5 w-5 text-yellow-400"
+                    <div className="flex-shrink-0 flex">
+                      <CheckCircleIcon
+                        className="h-5 w-5 text-green-400"
                         aria-hidden="true"
                       />
-                    </div>
-                    <div className="ml-3">
-                      <h3 className="text-sm font-medium text-yellow-800">
-                        Funds will be locked until 24th December.
-                      </h3>
-                      <div className="mt-2 text-sm text-yellow-700">
+
+                      <div className="text-sm text-green-700 ml-4">
                         <p>
-                          Your tokens will be staked until the end of the
-                          proposal period and cannot be withdrawn until then.
-                          You will earn{" "}
+                          You will earn a bonus{" "}
                           <b className="underline">
                             $
                             {(amount * interest).toLocaleString("fullwide", {
                               useGrouping: false,
                             })}
                           </b>{" "}
-                          for your staked amount. You can only vote once per
-                          proposal period.
+                          for taking part in the voting process
                         </p>
                       </div>
                     </div>
@@ -454,9 +416,10 @@ export default function Proposal() {
             )}
             {hasVoted ? (
               <div className="block flex items-center justify-center mt-4">
-                <CheckCircleIcon className="h-5 w-5 text-cyan-500" />
-                <span className="text-xl text-cyan-500">
-                  Vote successfully submitted
+                <CheckCircleIcon className="h-5 w-5 text-green-500" />
+                <span className="text-xl text-green-500">
+                  Vote successfully submitted. Your bonus will appear in your
+                  wallet
                 </span>
               </div>
             ) : (
@@ -467,7 +430,7 @@ export default function Proposal() {
                   onClick={submit}
                   className="block flex items-center justify-center mt-2 w-full py-3 px-4 rounded-md shadow bg-gradient-to-r disabled:opacity-50 from-teal-500 to-cyan-600 text-white font-medium hover:from-teal-600 hover:to-cyan-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-cyan-400 focus:ring-offset-gray-900"
                 >
-                  Stake and Vote
+                  Vote & Claim 0.5% bonus
                   {isVoting && (
                     <svg
                       className="animate-spin mr-3 h-5 w-5 text-white ml-4"

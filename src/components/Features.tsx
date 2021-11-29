@@ -38,9 +38,9 @@ const features = [
     icon: CogIcon,
   },
   {
-    name: "Staking",
+    name: "Bonuses",
     description:
-      "Rewards for active members of the community who vote on proposals.",
+      "Earn bonuses for taking part in the democratic voting process.",
     icon: ServerIcon,
   },
   {

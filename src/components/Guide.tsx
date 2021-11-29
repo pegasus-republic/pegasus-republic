@@ -263,11 +263,10 @@ export const Guide: React.FC = () => {
             <a href="#vote" className="underline">
               here.
             </a>{" "}
-            When you vote your tokens are staked until the end of the voting
-            period. You will recieve 0.5% in interest but will be unable to
-            withdraw until the end of the voting period. At the end of the 4
-            week period the votes are automatically calculated and the
-            tokenomics in the contract are updated.
+            When you vote you recieve a 0.5% bonus for taking part in the
+            democratic process. At the end of the 4 week period the votes are
+            automatically calculated and the tokenomics in the contract are
+            updated.
           </p>
         </div>
       </div>
