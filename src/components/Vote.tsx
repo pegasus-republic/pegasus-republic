@@ -86,6 +86,20 @@ function classNames(...classes: string[]) {
   return classes.filter(Boolean).join(" ");
 }
 
+// Results from November election
+const NOVEMBER_RESULTS: Votes = {
+  decreaseBurn: "100",
+  decreaseInterest: "6669459330460903950100",
+  decreaseTax: "22153436151140097550100",
+  increaseBurn: "71523181634717292077459",
+  increaseInterest: "36479063547493377027459",
+  increaseTax: "13209835624646886427459",
+  maintainBurn: "15777119693971423551529",
+  maintainInterest: "44151778468734434651529",
+  maintainTax: "51937029552901731651529",
+};
+
+const NOVEMBER_VOTED_AMOUNT = 261900904004066146887264;
 interface VoteProps {
   options: Option[];
   selected: Option;
@@ -102,11 +116,11 @@ export const Vote: React.FC<VoteProps> = ({
   const value = options.find((option) => option.type === selected.type);
   return (
     <>
-      <RadioGroup value={value} onChange={select}>
+      <RadioGroup value={value} onChange={isDisabled ? () => {} : select}>
         <div
           className={classNames(
             "mt-4 grid grid-cols-3 gap-y-6 sm:grid-cols-3 gap-x-4",
-            isDisabled ? "opacity-50 cursor-not-allowed" : "cursor-pointer"
+            isDisabled ? "cursor-not-allowed" : "cursor-pointer"
           )}
         >
           {options.map((option) => (
@@ -172,7 +186,7 @@ export const Vote: React.FC<VoteProps> = ({
 
 export default function Proposal() {
   const [reflectionVote, setReflectionVote] = useState(reflectionOptions[1]);
-  const [burnVote, setBurnVote] = useState(burnOptions[1]);
+  const [burnVote, setBurnVote] = useState(burnOptions[2]);
   const [interestVote, setInterestVote] = useState(interestOptions[1]);
   const [isVoting, setIsVoting] = useState(false);
   const [amount, setAmount] = useState(100000000);
@@ -184,8 +198,12 @@ export default function Proposal() {
   const [error, setError] = useState<string | null>(null);
 
   // Array of 9 votes
-  const [currentProposal, setCurrentProposal] = useState<Votes | null>(null);
-  const [totalValueLocked, setTotalValueLocked] = useState(0);
+  const [currentProposal, setCurrentProposal] = useState<Votes | null>(
+    NOVEMBER_RESULTS
+  );
+  const [totalValueLocked, setTotalValueLocked] = useState(
+    NOVEMBER_VOTED_AMOUNT
+  );
 
   const interest = 0.05;
 
@@ -196,6 +214,7 @@ export default function Proposal() {
 
     const tlv = await getTLV();
     const currentProposal = await getCurrentProposal();
+    console.log({ currentProposal });
     setCurrentProposal(currentProposal);
     console.log({ tlv });
     setTotalValueLocked(tlv);
@@ -327,28 +346,24 @@ export default function Proposal() {
       <div className="relative bg-white pb-16 sm:pb-24" id="vote">
         <div className="mx-auto max-w-md px-4 text-center sm:max-w-3xl sm:px-6 lg:px-8 lg:max-w-3xl">
           <p className="mt-2 text-3xl font-extrabold text-gray-900 tracking-tight sm:text-4xl">
-            Voting is Open
+            Voting period has ended
           </p>
           <p className="mt-2 text-xl font-medium text-gray-400 tracking-tight sm:text-2xl">
-            Closes on December 1st
+            Next voting period will start on{" "}
+            <span className="underline">24th December</span>
           </p>
           <p className="mt-5 max-w-prose mx-auto text-xl text-gray-500">
             Earn an instant <b className="text-cyan-500 underline">0.5%</b>{" "}
             bonus interest on your balance of tokens.
           </p>
 
-          <p className="max-w-prose mx-auto text-base text-gray-500 mt-2">
-            Every 4 weeks a new voting proposal is created. There is a
-            settlement period of 3 weeks before the tokenomics are automatically
-            updated.
-          </p>
           <a
             href="#guide"
             className="max-w-prose mx-auto text-base text-cyan-500 mb-8 underline"
           >
             How do I participate?
           </a>
-          {!hasWeb3 && (
+          {/* {!hasWeb3 && (
             <>
               <button
                 type="button"
@@ -358,7 +373,7 @@ export default function Proposal() {
                 Connect to Metamask to Vote
               </button>
             </>
-          )}
+          )} */}
 
           <Vote
             options={updatedReflectionOptions}
@@ -379,7 +394,12 @@ export default function Proposal() {
             isDisabled={!hasWeb3}
           />
 
-          <div className="mt-4">
+          <p className="max-w-prose mx-auto text-base text-gray-500 mt-2">
+            Every 4 weeks a new voting proposal is created. There is a
+            settlement period of 3 weeks before the tokenomics are automatically
+            updated.
+          </p>
+          {/* <div className="mt-4">
             {!hasVoted && (
               <>
                 {hasWeb3 && myBalance === 0 && (
@@ -477,7 +497,7 @@ export default function Proposal() {
                 </span>
               </div>
             )}
-          </div>
+          </div> */}
         </div>
       </div>
     </>
