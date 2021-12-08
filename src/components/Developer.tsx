@@ -108,12 +108,13 @@ export const Developer: React.FC = () => {
             </div>
             <div className="text-base max-w-prose mx-auto lg:max-w-none">
               <p className="text-lg text-gray-500 mt-4">
-                Since launch the community has responded amazingly and have
-                contributed with marketing, liquidity, support and guidance. As
-                creator of the project I do not associate with any marketing
-                material as it is not wise for one person to control and
-                influence the project so heavily. My key role is to provide the
-                infrastructure for voting and community engagemnet.
+                Since launch of Pegasus Republic the community has responded
+                amazingly and have contributed with marketing, liquidity,
+                support and guidance. As creator of the project I do not
+                associate with any marketing material as it is not wise for one
+                person to control and influence the project so heavily. My key
+                role is to provide the infrastructure for voting and community
+                engagemnet.
               </p>
             </div>
             <div className="text-base max-w-prose mx-auto lg:max-w-none">
