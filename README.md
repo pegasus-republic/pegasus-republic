@@ -1,1 +1,1 @@
-# Decentralized Autonomous Token
+# Pegasus Republic
