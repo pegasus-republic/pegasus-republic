@@ -19,6 +19,7 @@ const navigation = [
   { name: "Buy", href: "#buy" },
   { name: "Vote", href: "#vote" },
   { name: "Features", href: "#features" },
+  { name: "Team", href: "#team" },
   { name: "White Paper (Coming soon)" },
 ];
 

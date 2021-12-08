@@ -4,7 +4,7 @@ import adam from "../assets/profile.png";
 
 export const Developer: React.FC = () => {
   return (
-    <div className="bg-white overflow-hidden">
+    <div className="bg-white overflow-hidden" id="team">
       <div className="relative max-w-7xl mx-auto py-16 px-4 sm:px-6 lg:px-8">
         <div className="hidden lg:block bg-gray-50 absolute top-0 bottom-0 left-3/4 w-screen" />
         <div className="mx-auto text-base max-w-prose lg:grid lg:grid-cols-2 lg:gap-8 lg:max-w-none">
@@ -79,7 +79,8 @@ export const Developer: React.FC = () => {
             <div className="text-base max-w-prose mx-auto lg:max-w-none">
               <p className="text-lg text-gray-500">
                 Hi, I'm Adam and I am the creator of Pegasus Republic. I believe
-                communities should control tokens, <b>not greedy developers.</b>
+                communities should control tokens,{" "}
+                <b>not greedy developers. </b>
                 At launch I distributed all tokens for <b>free</b>.
               </p>
             </div>
