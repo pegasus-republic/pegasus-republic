@@ -7,6 +7,7 @@ import { BobHorseman } from "./components/BobHorseman";
 import { Roadmap } from "./components/Roadmap";
 import Footer from "./components/Footer";
 import { Developer } from "./components/Developer";
+import { Team } from "./components/Team";
 import { Guide } from "./components/Guide";
 
 // app.js
@@ -21,7 +22,7 @@ const App: React.FC = () => {
       <Features />
       <Roadmap />
       <Guide />
-      <Developer />
+      <Team />
       <Footer />
     </>
   );
