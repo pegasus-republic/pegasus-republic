@@ -352,13 +352,13 @@ export default function Proposal() {
         <div className="mx-auto max-w-md px-4 text-center sm:max-w-3xl sm:px-6 lg:px-8 lg:max-w-3xl">
           {isOpen ? (
             <>
-              <p className="mt-2 text-2xl font-extrabold text-gray-900 tracking-tight sm:text-2xl">
+              <p className="mt-2 text-2xl font-extrabold text-gray-900 leading-10  tracking-tight sm:text-2xl">
                 Voting is currently{" "}
                 <span className="bg-green-100 text-green-800 p-2 rounded-md">
                   open
                 </span>
               </p>
-              <p className="mt-1 text-lg  text-gray-500">
+              <p className="text-lg  text-gray-500">
                 Cast your vote below by selecting{" "}
                 <span className="underline">3 options</span> below
               </p>
@@ -378,12 +378,12 @@ export default function Proposal() {
             <>
               <p className="mt-2 text-2xl font-extrabold text-gray-900 tracking-tight sm:text-2xl">
                 Voting is closed while in the{" "}
-                <span className="bg-indigo-100 text-indigo-800 p-2 rounded-md">
+                <span className="bg-indigo-100 text-indigo-800 p-2 rounded-md leading-10 ">
                   settlement period
                 </span>
                 <LockClosedIcon className="inline-block w-6 h-6 mx-2 text-gray-700" />
               </p>
-              <p className="mt-1 text-lg  text-gray-500">
+              <p className="text-lg  text-gray-500">
                 Next voting period begins on the 24th of January
               </p>
             </>

@@ -118,12 +118,12 @@ export const Roadmap: React.FC = () => {
                   />
                 </svg>
                 <p className="ml-9 text-lg leading-6 font-medium text-gray-900">
-                  Community Distribution - January 2022
+                  White paper - February 2022
                 </p>
               </dt>
               <dd className="mt-2 ml-9 text-base text-gray-500">
-                Increase decentralization by distributing tokens through a range
-                of community awareness events.
+                Formalize the thesis of Pegaus Republic for peer review and
+                publication.
               </dd>
             </div>
 
