@@ -231,10 +231,10 @@ export default function Example() {
             <div className="mx-auto max-w-md px-4 text-center sm:px-6 sm:max-w-3xl lg:px-8 lg:max-w-7xl">
               <div>
                 <h2 className="text-base font-semibold tracking-wider text-cyan-600 uppercase">
-                  Decide the future of the token
+                  Decide the future of the $PEG token
                 </h2>
                 <p className="mt-2 text-3xl font-extrabold text-gray-900 tracking-tight sm:text-4xl">
-                  We are the treasury.
+                  Decentralized Governance
                 </p>
 
                 <p className="mt-5 max-w-prose mx-auto text-xl text-gray-500">
@@ -276,6 +276,9 @@ export default function Example() {
                         </dd>
                       </div>
                     </dl>
+                    <span className="float-right text-gray-500 text-xs mt-2">
+                      Current rates as of {new Date().toDateString()}
+                    </span>
                   </div>
                 </div>
               </div>

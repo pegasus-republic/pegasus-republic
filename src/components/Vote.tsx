@@ -6,6 +6,7 @@ import { CheckCircleIcon } from "@heroicons/react/solid";
 import {
   ExclamationCircleIcon,
   LockClosedIcon,
+  XCircleIcon,
 } from "@heroicons/react/outline";
 import {
   getTLV,
@@ -81,6 +82,11 @@ const interestOptions: Option[] = [
     type: "increase",
   },
 ];
+
+const date = new Date();
+
+// TODO automate in future
+const isOpen = date > new Date("2021-12-23") && date < new Date("2022-01-01");
 
 function classNames(...classes: string[]) {
   return classes.filter(Boolean).join(" ");
@@ -189,12 +195,11 @@ export default function Proposal() {
   const [burnVote, setBurnVote] = useState(burnOptions[2]);
   const [interestVote, setInterestVote] = useState(interestOptions[1]);
   const [isVoting, setIsVoting] = useState(false);
-  const [amount, setAmount] = useState(100000000);
+  const [amount, setAmount] = useState<number | null>(null);
   const [myBalance, setBalance] = useState(0);
 
   const [hasWeb3, setHasWeb3] = useState(false);
   const [hasVoted, setHasVoted] = useState(false);
-  const [stakedAmount, setStakedAmount] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
   // Array of 9 votes
@@ -234,7 +239,7 @@ export default function Proposal() {
     setIsVoting(true);
 
     // Can't submit full amount or contract complains
-    const validAmount = amount;
+    const validAmount = amount as number;
 
     // Don't send 100% since JS precision might go off and go over a users balance
     const amountForEachOption = Math.floor(
@@ -245,7 +250,7 @@ export default function Proposal() {
 
     try {
       await vote({
-        amount,
+        amount: amount as number,
         options: {
           increaseTax:
             reflectionVote.type === "increase" ? amountForEachOption : 0,
@@ -345,35 +350,44 @@ export default function Proposal() {
       {/* Feature section with grid */}
       <div className="relative bg-white pb-16 sm:pb-24" id="vote">
         <div className="mx-auto max-w-md px-4 text-center sm:max-w-3xl sm:px-6 lg:px-8 lg:max-w-3xl">
-          <p className="mt-2 text-3xl font-extrabold text-gray-900 tracking-tight sm:text-4xl">
-            Voting period has ended
-          </p>
-          <p className="mt-2 text-xl font-medium text-gray-400 tracking-tight sm:text-2xl">
-            Next voting period will start on{" "}
-            <span className="underline">24th December</span>
-          </p>
-          <p className="mt-5 max-w-prose mx-auto text-xl text-gray-500">
-            Earn an instant <b className="text-cyan-500 underline">0.5%</b>{" "}
-            bonus interest on your balance of tokens.
-          </p>
-
-          <a
-            href="#guide"
-            className="max-w-prose mx-auto text-base text-cyan-500 mb-8 underline"
-          >
-            How do I participate?
-          </a>
-          {/* {!hasWeb3 && (
+          {isOpen ? (
             <>
-              <button
-                type="button"
-                onClick={connect}
-                className="block flex items-center justify-center mt-4 w-full py-3 px-4 rounded-md shadow bg-gradient-to-r disabled:opacity-50 from-teal-500 to-cyan-600 text-white font-medium hover:from-teal-600 hover:to-cyan-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-cyan-400 focus:ring-offset-gray-900"
-              >
-                Connect to Metamask to Vote
-              </button>
+              <p className="mt-2 text-2xl font-extrabold text-gray-900 tracking-tight sm:text-2xl">
+                Voting is currently{" "}
+                <span className="bg-green-100 text-green-800 p-2 rounded-md">
+                  open
+                </span>
+              </p>
+              <p className="mt-1 text-lg  text-gray-500">
+                Cast your vote below by selecting{" "}
+                <span className="underline">3 options</span> below
+              </p>
+              {!hasWeb3 && (
+                <>
+                  <button
+                    type="button"
+                    onClick={connect}
+                    className="block flex items-center justify-center mt-4 w-full py-3 px-4 rounded-md shadow bg-gradient-to-r disabled:opacity-50 from-teal-500 to-cyan-600 text-white font-medium hover:from-teal-600 hover:to-cyan-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-cyan-400 focus:ring-offset-gray-900"
+                  >
+                    Connect to BSC to Vote
+                  </button>
+                </>
+              )}
             </>
-          )} */}
+          ) : (
+            <>
+              <p className="mt-2 text-2xl font-extrabold text-gray-900 tracking-tight sm:text-2xl">
+                Voting is closed while in the{" "}
+                <span className="bg-indigo-100 text-indigo-800 p-2 rounded-md">
+                  settlement period
+                </span>
+                <LockClosedIcon className="inline-block w-6 h-6 mx-2 text-gray-700" />
+              </p>
+              <p className="mt-1 text-lg  text-gray-500">
+                Next voting period begins on the 24th of January
+              </p>
+            </>
+          )}
 
           <Vote
             options={updatedReflectionOptions}
@@ -394,12 +408,7 @@ export default function Proposal() {
             isDisabled={!hasWeb3}
           />
 
-          <p className="max-w-prose mx-auto text-base text-gray-500 mt-2">
-            Every 4 weeks a new voting proposal is created. There is a
-            settlement period of 3 weeks before the tokenomics are automatically
-            updated.
-          </p>
-          {/* <div className="mt-4">
+          <div className="mt-4">
             {!hasVoted && (
               <>
                 {hasWeb3 && myBalance === 0 && (
@@ -421,10 +430,12 @@ export default function Proposal() {
                         <p>
                           You will earn a bonus{" "}
                           <b className="underline">
-                            $
-                            {(amount * interest).toLocaleString("fullwide", {
-                              useGrouping: false,
-                            })}
+                            {amount
+                              ? (amount * interest).toLocaleString("fullwide", {
+                                  useGrouping: false,
+                                })
+                              : "?"}
+                            {} $PEG
                           </b>{" "}
                           for taking part in the voting process
                         </p>
@@ -497,7 +508,24 @@ export default function Proposal() {
                 </span>
               </div>
             )}
-          </div> */}
+            {error && (
+              <div className="rounded-md bg-red-50 p-4 mt-2">
+                <div className="flex">
+                  <div className="flex-shrink-0">
+                    <XCircleIcon
+                      className="h-5 w-5 text-red-400"
+                      aria-hidden="true"
+                    />
+                  </div>
+                  <div className="ml-3">
+                    <h3 className="text-sm font-medium text-red-800">
+                      {error}
+                    </h3>
+                  </div>
+                </div>
+              </div>
+            )}
+          </div>
         </div>
       </div>
     </>

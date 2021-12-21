@@ -118,11 +118,115 @@ export const Roadmap: React.FC = () => {
                   />
                 </svg>
                 <p className="ml-9 text-lg leading-6 font-medium text-gray-900">
-                  NFTs and Memes - 2022
+                  Community Distribution - January 2022
                 </p>
               </dt>
               <dd className="mt-2 ml-9 text-base text-gray-500">
-                Collect horse memes and NFTs using the PEG token.
+                Increase decentralization by distributing tokens through a range
+                of community awareness events.
+              </dd>
+            </div>
+
+            <div className="relative">
+              <dt>
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  className="absolute h-6 w-6 text-gray-400"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"
+                  />
+                </svg>
+                <p className="ml-9 text-lg leading-6 font-medium text-gray-900">
+                  Listings - March 2022
+                </p>
+              </dt>
+              <dd className="mt-2 ml-9 text-base text-gray-500">
+                Finalize listings on a range of platforms to increase awareness
+                and decentralized ownership of token.
+              </dd>
+            </div>
+
+            <div className="relative">
+              <dt>
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  className="absolute h-6 w-6 text-gray-400"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"
+                  />
+                </svg>
+                <p className="ml-9 text-lg leading-6 font-medium text-gray-900">
+                  Pegasus NFTs - June 2022
+                </p>
+              </dt>
+              <dd className="mt-2 ml-9 text-base text-gray-500">
+                Collect limited edition Pegasus NFTs by burning liquidity.
+              </dd>
+            </div>
+
+            <div className="relative">
+              <dt>
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  className="absolute h-6 w-6 text-gray-400"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"
+                  />
+                </svg>
+                <p className="ml-9 text-lg leading-6 font-medium text-gray-900">
+                  Advanced Voting Mechanics - July 2022
+                </p>
+              </dt>
+              <dd className="mt-2 ml-9 text-base text-gray-500">
+                Are you passionate about increasing the burn? Now you will be
+                able to use all your voting power on just one option.
+              </dd>
+            </div>
+
+            <div className="relative">
+              <dt>
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  className="absolute h-6 w-6 text-gray-400"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"
+                  />
+                </svg>
+                <p className="ml-9 text-lg leading-6 font-medium text-gray-900">
+                  Pegasus Foundation & DAO - December 2022
+                </p>
+              </dt>
+              <dd className="mt-2 ml-9 text-base text-gray-500">
+                Decouple ownership of website/marketing and place under control
+                of a DAO.
               </dd>
             </div>
 
