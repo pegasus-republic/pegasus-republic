@@ -201,8 +201,11 @@ export default function Example() {
                           </div>
                         </div>
                         <p className="mt-3 text-sm text-gray-300 sm:mt-4">
-                          Set slippage to 6%.{" "}
-                          <a href="#" className="font-medium text-white">
+                          Set slippage to 8%.{" "}
+                          <a
+                            href="https://daftcoin.gitbook.io/daftcoin/how-to-use-the-slippage-settings-on-pancakeswap"
+                            className="font-medium text-white"
+                          >
                             Read more
                           </a>
                           .
@@ -256,7 +259,7 @@ export default function Example() {
                           Burn
                         </dt>
                         <dd className="order-1 text-5xl font-extrabold text-cyan-600">
-                          3%
+                          4%
                         </dd>
                       </div>
                       <div className="flex flex-col border-t border-b border-gray-100 p-6 text-center sm:border-0 sm:border-l sm:border-r">

@@ -122,7 +122,7 @@ export const Roadmap: React.FC = () => {
                 </p>
               </dt>
               <dd className="mt-2 ml-9 text-base text-gray-500">
-                Formalize the thesis of Pegaus Republic for peer review and
+                Formalize the thesis of Pegasus Republic for peer review and
                 publication.
               </dd>
             </div>

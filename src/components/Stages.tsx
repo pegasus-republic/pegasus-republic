@@ -46,10 +46,11 @@ export default function Example() {
                 Voting opens
               </p>
               <p className="mt-3 text-base text-gray-500">
-                Each hodler can cast their vote below and instantly receive a{" "}
+                Each hodler can cast their vote below and receive a{" "}
                 <span className="text-cyan-600 font-bold underline">0.5%</span>{" "}
-                bonus on top of their current holdings. The voting period lasts
-                for one week and you can only vote once per account.
+                bonus on top of their current holdings. The bonus is locked
+                until the end of the voting period. The voting period lasts for
+                one week and you can only vote once per account.
               </p>
             </a>
           </div>

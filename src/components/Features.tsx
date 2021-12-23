@@ -17,7 +17,7 @@ const features = [
   {
     name: "Reflection",
     description:
-      "3% is reflected to holders automatically for a passive income.",
+      "A percentage is reflected to holders automatically for a passive income.",
     icon: CloudUploadIcon,
   },
 
@@ -34,8 +34,9 @@ const features = [
     icon: ShieldCheckIcon,
   },
   {
-    name: "Tax",
-    description: "Sale tax which is distributed amongst all hodlers.",
+    name: "NFTs",
+    description:
+      "Stack your $PEG to have the chance to purchase limited edition horse NFTs.",
     icon: CogIcon,
   },
   {
@@ -284,6 +285,11 @@ export default function Features() {
                 address of Bob Horseman. Amongst the active addresses, holdings
                 were only allocated in the range of 1-5% of the total supply to
                 prevent a single individual having too much influence.
+              </p>
+              <p className="mt-8 text-xl text-gray-500 leading-8 text-center">
+                The community responded outstandling and approximately 10% of
+                the active tokens were burnt into the Pancake swap liquidity
+                pool.
               </p>
             </div>
           </div>
