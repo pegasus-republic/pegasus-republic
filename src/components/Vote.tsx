@@ -44,19 +44,19 @@ const reflectionOptions: Option[] = [
 const burnOptions: Option[] = [
   {
     title: "Decrease Burn",
-    percent: "2%",
+    percent: "3%",
     voteIndex: 5,
     type: "decrease",
   },
   {
     title: "Maintain Burn",
-    percent: "3%",
+    percent: "4%",
     voteIndex: 4,
     type: "maintain",
   },
   {
     title: "Increase Burn",
-    percent: "4%",
+    percent: "5%",
     voteIndex: 3,
     type: "increase",
   },
@@ -178,7 +178,7 @@ export const Vote: React.FC<VoteProps> = ({
                   <span className="text-cyan-700 text-xs font-bold overflow-visible absolute bottom-0">
                     {option.votedPercentage
                       ? `${option.votedPercentage.toFixed(2)}%`
-                      : "33%"}
+                      : "0%"}
                   </span>
                 </>
               )}
@@ -203,9 +203,7 @@ export default function Proposal() {
   const [error, setError] = useState<string | null>(null);
 
   // Array of 9 votes
-  const [currentProposal, setCurrentProposal] = useState<Votes | null>(
-    NOVEMBER_RESULTS
-  );
+  const [currentProposal, setCurrentProposal] = useState<Votes | null>(null);
   const [totalValueLocked, setTotalValueLocked] = useState(
     NOVEMBER_VOTED_AMOUNT
   );
@@ -344,6 +342,7 @@ export default function Proposal() {
       ];
 
   console.log({ reflectionVote });
+  console.log({ updatedReflectionOptions });
 
   return (
     <>
