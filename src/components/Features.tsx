@@ -13,6 +13,8 @@ import {
   XIcon,
 } from "@heroicons/react/outline";
 
+import memeTools from "../assets/memetools.png";
+
 const features = [
   {
     name: "Reflection",
@@ -108,7 +110,7 @@ export default function Features() {
               </h2>
               <div className="flow-root self-center mt-8 lg:mt-0">
                 <div className="-mt-4 -ml-8 flex flex-wrap justify-between lg:-ml-4 grid-cols-2">
-                  <div className="mt-4 ml-8 col-span-1 flex flex-grow flex-shrink-0 justify-center lg:flex-grow-0 lg:ml-4">
+                  <div className="mt-4 ml-8 col-span-1 flex flex-grow flex-shrink-0 justify-center  lg:ml-4">
                     <a
                       href="https://bscscan.com/token/0x06872971938462d0b206d01fe98ecc3e73798b89"
                       target="_blank"
@@ -126,15 +128,13 @@ export default function Features() {
                       </div>
                     </a>
                   </div>
-                  <div className="mt-4 ml-8 col-span-1 flex items-center flex-col flex-grow flex-shrink-0 justify-center lg:flex-grow-0 lg:ml-4">
-                    <img
-                      className="h-12 opacity-50"
-                      src="https://static.coingecko.com/s/coingecko-branding-guide-4f5245361f7a47478fa54c2c57808a9e05d31ac7ca498ab189a3827d6000e22b.png"
-                      alt="Tuple"
-                    />
+                  <div className="mt-4 ml-8 col-span-1 flex items-center flex-col flex-grow flex-shrink-0 justify-center ">
+                    <a href="https://memetools.app/" target="_blank">
+                      <img className="h-24" src={memeTools} alt="Tuple" />
+                    </a>
                   </div>
 
-                  <div className="mt-8 ml-8 col-span-1 flex flex-grow flex-shrink-0 justify-center lg:flex-grow-0 lg:ml-4">
+                  <div className="mt-8 ml-8 col-span-1 flex flex-grow flex-shrink-0 justify-center  lg:ml-4">
                     <a
                       href="https://pancakeswap.finance/swap?outputCurrency=0x06872971938462D0b206D01fe98eCc3E73798b89"
                       target="_blank"
@@ -146,7 +146,7 @@ export default function Features() {
                       />
                     </a>
                   </div>
-                  <div className="mt-8 -ml-8 col-span-1 flex flex-grow flex-shrink-0 justify-center lg:flex-grow-0 lg:ml-4">
+                  <div className="mt-8 -ml-8 col-span-1 flex flex-grow flex-shrink-0 justify-center  lg:ml-4">
                     <a
                       href="https://github.com/pegasus-republic/pegasus-republic"
                       target="_blank"

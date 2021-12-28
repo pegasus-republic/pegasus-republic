@@ -65,8 +65,14 @@ export const Guide: React.FC = () => {
             </h3>
             <p className="mt-3 text-lg text-gray-500">
               The Pegasus Republic token $PEG can be found on a range of
-              Decentralised exchanges. The easiest way to find $PEG is via
-              Pancake swap.
+              Decentralised exchanges. The easiest way to find $PEG is via{" "}
+              <a
+                href="https://pancakeswap.finance/swap"
+                target="_blank"
+                className="text-cyan-500 underline"
+              >
+                Pancake Swap
+              </a>
             </p>
 
             <p className="mt-3 text-lg text-gray-500">
