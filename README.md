@@ -8,6 +8,12 @@ https://pegasus-republic.com
 
 <img width="1451" alt="Screen Shot 2021-12-08 at 5 57 36 pm" src="https://user-images.githubusercontent.com/11745561/145162944-567b3231-40bb-454d-bcb8-e092a37f56fb.png">
 
+# Disclaimer
+
+This project, smart contracts and code are used for educational purposes only. We do not advise any cryptocurrency should be bought, sold or traded.
+
+There was no ICO or pre-sale. All tokens were distributed for free.
+
 # Contracts
 
 This repository contains 2 contracts under the `/contracts` directory.
